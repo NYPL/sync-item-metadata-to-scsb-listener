@@ -8,7 +8,7 @@ Resources:
     Properties:
       Handler: app.handle_event
       Runtime: ruby2.5
-      Timeout: 10
+      Timeout: 30
       Environment:
         Variables:
           PLATFORM_API_BASE_URL: 'https://qa-platform.nypl.org/api/v0.1/'
@@ -18,3 +18,4 @@ Resources:
           SCSB_API_BASE_URL: AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAIAwfgYJKoZIhvcNAQcGoHEwbwIBADBqBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDC76YFNmHCel71yszwIBEIA9rRyZEpeLBxMs8wjvsVRuWXU2RoEvtYbg4GkbaRMK5c6DOKPReBD6ehzyxLQriwMBa5U30qXRDaKmSR7OIw==
           SCSB_API_KEY: AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAGMwYQYJKoZIhvcNAQcGoFQwUgIBADBNBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBGj6VVDSTYYcLzAdgIBEIAgOtoxPpUgkHHgc3eipZzyfMEUwYHIt7VvXy9Y5GRkVik=
           NOTIFICATION_EMAIL: AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAHMwcQYJKoZIhvcNAQcGoGQwYgIBADBdBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDIJI11++bttShr1irwIBEIAwF0xNvg3mkAIna3pOEPhnm7+2wVqnvhWHk9BN1ImBbfW9kPcqUVImyKfGl2w25KjB
+          LOG_LEVEL: debug

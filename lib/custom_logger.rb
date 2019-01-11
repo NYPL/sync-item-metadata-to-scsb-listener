@@ -82,19 +82,19 @@ class CustomLogger
 
   # Convenience statics:
 
-  def self.info (message, obj)
+  def self.info (message, obj = nil)
     self.log 'info', message, obj
   end
 
-  def self.debug (message, obj)
+  def self.debug (message, obj = nil)
     self.log 'debug', message, obj
   end
 
-  def self.error (message, obj)
+  def self.error (message, obj = nil)
     self.log 'error', message, obj
   end
 
-  def self.log (level, message, obj)
+  def self.log (level, message, obj = nil)
     log_obj = {
       'level' => level,
       'message' => message,

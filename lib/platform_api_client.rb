@@ -18,7 +18,7 @@ class PlatformApiClient
     @oauth_site = ENV['NYPL_OAUTH_URL']
   end
 
-  def get (path, options)
+  def get (path, options = {})
     options = {
       authenticated: true
     }.merge options
@@ -26,6 +26,9 @@ class PlatformApiClient
     authenticate! if options[:authenticated]
 
     uri = URI.parse("#{ENV['PLATFORM_API_BASE_URL']}#{path}")
+
+    CustomLogger.debug "Getting from platform api", { uri: uri }
+
     begin
       request = Net::HTTP::Get.new(uri)
       request["Authorization"] = "Bearer #{@access_token}" if options[:authenticated]
@@ -33,12 +36,16 @@ class PlatformApiClient
         http.request(request)
       end
 
+      CustomLogger.debug "Got platform api response", { code: response.code, body: response.body }
+
+      parse_json_response response
+
     rescue Exception => e
       raise AvroError.new(e), "Failed to retrieve #{path} schema: #{e.message}"
     end
   end 
 
-  def post (path, body, options)
+  def post (path, body, options = {})
     options = {
       authenticated: true
     }.merge options
@@ -62,8 +69,14 @@ class PlatformApiClient
     # Execute request:
     response = http.request(request)
 
-    CustomLogger.debug "Got platform api response", response
+    CustomLogger.debug "Got platform api response", { code: response.code, body: response.body }
+  
+    parse_json_response response
+  end
 
+  private
+
+  def parse_json_response (response)
     if response.code == "200"
       JSON.parse(response.body)
     elsif response.code == "401"
@@ -74,8 +87,6 @@ class PlatformApiClient
       {}
     end
   end
-
-  private
 
   # Authorizes the request.
   def authenticate!

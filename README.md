@@ -27,9 +27,9 @@ All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
 
 ### Running events locally
 
-The following will invoke the lambda against the sample `event.json`
+The following will invoke the lambda against the sample event jsons:
 ```
-sam local invoke --event event.json --region us-east-1 --template sam.[ENVIRONMENT].yml --profile [aws profile]
+sam local invoke --event event.[bib/item].json --region us-east-1 --template sam.[ENVIRONMENT].yml --profile [aws profile]
 ```
 
 The sample `event.json` as follows:

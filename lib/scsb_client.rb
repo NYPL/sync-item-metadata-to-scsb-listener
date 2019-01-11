@@ -16,6 +16,15 @@ class ScsbClient
     @api_base_url = kms_client.decrypt(ENV['SCSB_API_BASE_URL']).strip
   end
 
+  def items_by_bib_id (id)
+    result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: id
+
+    raise "SCSB returned no match for id #{id}" if result['searchResultRows'].empty?
+    CustomLogger.debug "Retrieved bib by id #{id} from scsb", result
+
+    result['searchResultRows']
+  end
+
   def item_by_barcode (barcode)
     result = self.search fieldName: 'Barcode', fieldValue: barcode
 
