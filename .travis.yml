@@ -5,7 +5,7 @@ install:
 cache:
 - bundler
 script:
-- bundle exec rspec
+- APP_ENV=test bundle exec rspec
 deploy:
 - provider: lambda
   function_name: SyncItemMetadataToScsbListener-development

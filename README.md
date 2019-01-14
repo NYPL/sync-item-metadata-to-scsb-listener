@@ -48,6 +48,14 @@ bundle install --no-deployment
 bundle exec rspec
 ```
 
+### Updating fixtures
+
+Fixtures are stored in `./spec/fixtures`. Those ending in `.raw` are HTTP responses captured using `curl -is` as follows:
+
+```
+curl -is "https://platform.nypl.org/api/v0.1/items?nyplSource=sierra-nypl&bibId=10079340&limit=1" -H "authorization: Bearer [**relevant access token**]" > ./spec/fixtures/platform-api-items-by-bib-10079340.raw
+```
+
 ## Deploy
 
 Deployments are entirely handled by Travis-ci.com. To deploy to development, qa, or production, commit code to the `development`, `qa`, and `master` branches on origin, respectively.
