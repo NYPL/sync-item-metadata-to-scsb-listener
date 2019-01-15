@@ -10,7 +10,7 @@ class KmsClient
 
   def decrypt(cipher)
     # Assume value is base64 encoded:
-    decoded = Base64.strict_decode64 cipher
+    decoded = Base64.decode64 cipher
     decrypted = @kms.decrypt ciphertext_blob: decoded
     decrypted[:plaintext]
   end
