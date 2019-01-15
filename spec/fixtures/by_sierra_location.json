@@ -1,0 +1,4 @@
+{
+  "rc2ma":{"code":"rc2ma","label":"Offsite","locationsApiSlug":null,"collectionTypes":["Research"],"recapLocation":null,"sierraDeliveryLocations":[],"requestable":true,"deliveryLocationTypes":[]},
+  "hfa0f":{"code":"hfa0f","label":"Hamilton Fish Park Fiction","locationsApiSlug":null,"collectionTypes":["Branch"],"recapLocation":null,"sierraDeliveryLocations":[],"requestable":false,"deliveryLocationTypes":[]}
+}

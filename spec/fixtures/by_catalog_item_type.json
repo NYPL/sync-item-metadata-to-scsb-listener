@@ -1,0 +1,4 @@
+{ 
+  "3":   {"id":"nyplCatalogItemTypes:3","code":"3","label":"serial","requestable":true,"collectionType":["Research"]},
+  "138": {"id":"nyplCatalogItemTypes:138","code":"138","label":"Leased book, 3-week","collectionType":["Branch"]}
+}

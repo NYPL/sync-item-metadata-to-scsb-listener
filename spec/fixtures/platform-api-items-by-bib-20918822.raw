@@ -1,0 +1,20 @@
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=utf-8
+Content-Length: 2771
+Connection: keep-alive
+Date: Tue, 15 Jan 2019 18:59:02 GMT
+x-amzn-RequestId: 9fb4415d-18f7-11e9-94c6-61eda4bb91d2
+Access-Control-Allow-Origin: *
+X-NYPL-Original-Request: https://platform.nypl.org/api/v0.1/items?bibId=20918822&limit=1&nyplSource=sierra-nypl
+Access-Control-Allow-Headers: Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token
+x-amzn-Remapped-Content-Length: 2771
+X-NYPL-Response-Date: 2019-01-15T13:59:02-05:00
+x-amz-apigw-id: TjwKiGFwoAMFTZA=
+Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+X-Amzn-Trace-Id: Root=1-5c3e2d76-daf3d0109ff29fe849addd64;Sampled=0
+Access-Control-Allow-Credentials: true
+X-Cache: Miss from cloudfront
+Via: 1.1 f19281f08e79aa6c6634266c50732dd5.cloudfront.net (CloudFront)
+X-Amz-Cf-Id: -oPWN551X5kgpMLT1nU07AeioZfRPeFg7I5BLIXWRJeDGVz92EdUUA==
+
+{"data":[{"nyplSource":"sierra-nypl","bibIds":["20918822"],"id":"33883185","nyplType":"item","updatedDate":"2018-07-20T01:17:31-04:00","createdDate":"2016-03-23T19:27:19-04:00","deletedDate":null,"deleted":false,"location":{"code":"hfa0f","name":"Hamilton Fish Park Fiction"},"status":{"code":"-","display":"AVAILABLE","duedate":null},"barcode":"33333829288964","callNumber":null,"itemType":null,"fixedFields":{"57":{"label":"BIB HOLD","value":false,"display":null},"58":{"label":"Copy No.","value":1,"display":null},"59":{"label":"Item Code 1","value":"0","display":null},"60":{"label":"Item Code 2","value":"-","display":null},"61":{"label":"Item Type","value":"138","display":"Leased book, 3-week"},"62":{"label":"Price","value":2700,"display":null},"64":{"label":"Checkout Location","value":35,"display":null},"68":{"label":"Last Checkin","value":"2017-05-24T17:30:32Z","display":null},"70":{"label":"Checkin Location","value":46,"display":null},"74":{"label":"Item Use 3","value":0,"display":null},"76":{"label":"Total Checkouts","value":1,"display":null},"77":{"label":"Total Renewals","value":0,"display":null},"78":{"label":"Last Checkout Date","value":"2017-05-11T19:26:51Z","display":null},"79":{"label":"Location","value":"hfa0f","display":"Hamilton Fish Park Fiction"},"80":{"label":"Record Type","value":"i","display":null},"81":{"label":"Record Number","value":"33883185","display":null},"83":{"label":"Created Date","value":"2016-03-23T19:27:19Z","display":null},"84":{"label":"Updated Date","value":"2018-07-20T01:17:31Z","display":null},"85":{"label":"No. of Revisions","value":"7","display":null},"86":{"label":"Agency","value":"1","display":null},"88":{"label":"Status","value":"-","display":"AVAILABLE"},"93":{"label":"Inhouse Use","value":0,"display":null},"94":{"label":"Copy Use","value":0,"display":null},"97":{"label":"Item Message","value":"-","display":null},"98":{"label":"PDATE","value":"2017-07-21T16:42:54Z","display":null},"108":{"label":"OPAC Message","value":"n","display":null},"109":{"label":"Year-to-Date Circ","value":0,"display":null},"110":{"label":"Last Year Circ","value":0,"display":null},"127":{"label":"Item Agency","value":"0","display":"Undefined"},"161":{"label":"VI Central","value":0,"display":null},"162":{"label":"IR Dist Learn Same Site","value":"0","display":null},"264":{"label":"Holdings Item Tag","value":"6","display":null},"265":{"label":"Inherit Location","value":false,"display":null},"306":{"label":"Sticky Status","value":" ","display":null}},"varFields":[{"fieldTag":"b","marcTag":null,"ind1":null,"ind2":null,"content":"33333829288964","subfields":null},{"fieldTag":"t","marcTag":null,"ind1":null,"ind2":null,"content":"LEASED","subfields":null}]}],"count":1,"totalCount":0,"statusCode":200,"debugInfo":[]}

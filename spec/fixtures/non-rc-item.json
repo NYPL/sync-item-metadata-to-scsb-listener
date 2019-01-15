@@ -1,1 +1,214 @@
-{"id":"11907244","nyplSource":"sierra-nypl","nyplType":"item","updatedDate":"2018-12-28T20:29:11-05:00","createdDate":"2009-02-05T18:40:00-05:00","deletedDate":null,"deleted":false,"bibIds":["10079340"],"location":{"code":"nonrc2ma","name":"OFFSITE - Request in Advance"},"status":{"code":"t","display":"IN TRANSIT","duedate":null},"barcode":"33433020768838","callNumber":"M-11 5205","itemType":null,"fixedFields":{"57":{"label":"BIB HOLD","value":"false","display":null},"58":{"label":"Copy No.","value":"1","display":null},"59":{"label":"Item Code 1","value":"0","display":null},"60":{"label":"Item Code 2","value":"-","display":null},"61":{"label":"Item Type","value":"3","display":"serial"},"62":{"label":"Price","value":"0.000000","display":null},"64":{"label":"Checkout Location","value":"309","display":null},"68":{"label":"Last Checkin","value":"2018-12-28T20:28:12Z","display":null},"69":{"label":"Inventory Date","value":"2014-06-01T08:00:00Z","display":null},"70":{"label":"Checkin Location","value":"309","display":null},"74":{"label":"Item Use 3","value":"0","display":null},"76":{"label":"Total Checkouts","value":"2","display":null},"77":{"label":"Total Renewals","value":"3","display":null},"78":{"label":"Last Checkout Date","value":"2018-12-28T19:32:33Z","display":null},"79":{"label":"Location","value":"nonrc2ma","display":"OFFSITE - Request in Advance"},"80":{"label":"Record Type","value":"i","display":null},"81":{"label":"Record Number","value":"11907244","display":null},"83":{"label":"Created Date","value":"2009-02-05T18:40:00Z","display":null},"84":{"label":"Updated Date","value":"2018-12-28T20:29:11Z","display":null},"85":{"label":"No. of Revisions","value":"25","display":null},"86":{"label":"Agency","value":"1","display":null},"88":{"label":"Status","value":"t","display":"IN TRANSIT"},"93":{"label":"Inhouse Use","value":"0","display":null},"94":{"label":"Copy Use","value":"0","display":null},"97":{"label":"Item Message","value":"-","display":null},"98":{"label":"PDATE","value":"2018-12-28T20:28:12Z","display":null},"108":{"label":"OPAC Message","value":"2","display":null},"109":{"label":"Year-to-Date Circ","value":"1","display":null},"110":{"label":"Last Year Circ","value":"0","display":null},"127":{"label":"Item Agency","value":"214","display":"ReCAP (NA) - NYPL Standard"},"161":{"label":"VI Central","value":"0","display":null},"162":{"label":"IR Dist Learn Same Site","value":"0","display":null},"264":{"label":"Holdings Item Tag","value":"6","display":null},"265":{"label":"Inherit Location","value":"false","display":null}},"varFields":[{"fieldTag":"a","marcTag":"949","ind1":" ","ind2":" ","content":null,"subfields":[{"tag":"a","content":"M-11 5205"},{"tag":"c","content":"33433020768838"},{"tag":"e","content":"1970-75"},{"tag":"h","content":"1"},{"tag":"i","content":"0"},{"tag":"j","content":"-"},{"tag":"k","content":"3"},{"tag":"l","content":"$0.00"},{"tag":"m","content":"0"},{"tag":"n","content":"1"},{"tag":"o","content":"3"},{"tag":"p","content":"rcah "},{"tag":"q","content":"-"},{"tag":"r","content":"0"},{"tag":"s","content":"0"},{"tag":"t","content":"-"},{"tag":"u","content":"-"},{"tag":"v","content":"1"},{"tag":"w","content":"0"},{"tag":"x","content":".i34261527"},{"tag":"y","content":"04-30-03"},{"tag":"z","content":"01-22-09"}]},{"fieldTag":"b","marcTag":null,"ind1":null,"ind2":null,"content":"33433020768838","subfields":null},{"fieldTag":"c","marcTag":"852","ind1":"8","ind2":" ","content":null,"subfields":[{"tag":"h","content":"M-11 5205"}]},{"fieldTag":"m","marcTag":null,"ind1":null,"ind2":null,"content":"Fri Dec 28 2018 03:29PM: IN TRANSIT from circaltm to nonrc2ma","subfields":null},{"fieldTag":"v","marcTag":null,"ind1":null,"ind2":null,"content":"1970-75","subfields":null}]}
+{
+  "nyplSource": "sierra-nypl",
+  "bibIds": [
+    "20918822"
+  ],
+  "id": "33883185",
+  "nyplType": "item",
+  "updatedDate": "2018-07-20T01:17:31-04:00",
+  "createdDate": "2016-03-23T19:27:19-04:00",
+  "deletedDate": null,
+  "deleted": false,
+  "location": {
+    "code": "hfa0f",
+    "name": "Hamilton Fish Park Fiction"
+  },
+  "status": {
+    "code": "-",
+    "display": "AVAILABLE",
+    "duedate": null
+  },
+  "barcode": "33333829288964",
+  "callNumber": null,
+  "itemType": null,
+  "fixedFields": {
+    "57": {
+      "label": "BIB HOLD",
+      "value": false,
+      "display": null
+    },
+    "58": {
+      "label": "Copy No.",
+      "value": 1,
+      "display": null
+    },
+    "59": {
+      "label": "Item Code 1",
+      "value": "0",
+      "display": null
+    },
+    "60": {
+      "label": "Item Code 2",
+      "value": "-",
+      "display": null
+    },
+    "61": {
+      "label": "Item Type",
+      "value": "138",
+      "display": "Leased book, 3-week"
+    },
+    "62": {
+      "label": "Price",
+      "value": 2700,
+      "display": null
+    },
+    "64": {
+      "label": "Checkout Location",
+      "value": 35,
+      "display": null
+    },
+    "68": {
+      "label": "Last Checkin",
+      "value": "2017-05-24T17:30:32Z",
+      "display": null
+    },
+    "70": {
+      "label": "Checkin Location",
+      "value": 46,
+      "display": null
+    },
+    "74": {
+      "label": "Item Use 3",
+      "value": 0,
+      "display": null
+    },
+    "76": {
+      "label": "Total Checkouts",
+      "value": 1,
+      "display": null
+    },
+    "77": {
+      "label": "Total Renewals",
+      "value": 0,
+      "display": null
+    },
+    "78": {
+      "label": "Last Checkout Date",
+      "value": "2017-05-11T19:26:51Z",
+      "display": null
+    },
+    "79": {
+      "label": "Location",
+      "value": "hfa0f",
+      "display": "Hamilton Fish Park Fiction"
+    },
+    "80": {
+      "label": "Record Type",
+      "value": "i",
+      "display": null
+    },
+    "81": {
+      "label": "Record Number",
+      "value": "33883185",
+      "display": null
+    },
+    "83": {
+      "label": "Created Date",
+      "value": "2016-03-23T19:27:19Z",
+      "display": null
+    },
+    "84": {
+      "label": "Updated Date",
+      "value": "2018-07-20T01:17:31Z",
+      "display": null
+    },
+    "85": {
+      "label": "No. of Revisions",
+      "value": "7",
+      "display": null
+    },
+    "86": {
+      "label": "Agency",
+      "value": "1",
+      "display": null
+    },
+    "88": {
+      "label": "Status",
+      "value": "-",
+      "display": "AVAILABLE"
+    },
+    "93": {
+      "label": "Inhouse Use",
+      "value": 0,
+      "display": null
+    },
+    "94": {
+      "label": "Copy Use",
+      "value": 0,
+      "display": null
+    },
+    "97": {
+      "label": "Item Message",
+      "value": "-",
+      "display": null
+    },
+    "98": {
+      "label": "PDATE",
+      "value": "2017-07-21T16:42:54Z",
+      "display": null
+    },
+    "108": {
+      "label": "OPAC Message",
+      "value": "n",
+      "display": null
+    },
+    "109": {
+      "label": "Year-to-Date Circ",
+      "value": 0,
+      "display": null
+    },
+    "110": {
+      "label": "Last Year Circ",
+      "value": 0,
+      "display": null
+    },
+    "127": {
+      "label": "Item Agency",
+      "value": "0",
+      "display": "Undefined"
+    },
+    "161": {
+      "label": "VI Central",
+      "value": 0,
+      "display": null
+    },
+    "162": {
+      "label": "IR Dist Learn Same Site",
+      "value": "0",
+      "display": null
+    },
+    "264": {
+      "label": "Holdings Item Tag",
+      "value": "6",
+      "display": null
+    },
+    "265": {
+      "label": "Inherit Location",
+      "value": false,
+      "display": null
+    },
+    "306": {
+      "label": "Sticky Status",
+      "value": " ",
+      "display": null
+    }
+  },
+  "varFields": [
+    {
+      "fieldTag": "b",
+      "marcTag": null,
+      "ind1": null,
+      "ind2": null,
+      "content": "33333829288964",
+      "subfields": null
+    },
+    {
+      "fieldTag": "t",
+      "marcTag": null,
+      "ind1": null,
+      "ind2": null,
+      "content": "LEASED",
+      "subfields": null
+    }
+  ]
+}

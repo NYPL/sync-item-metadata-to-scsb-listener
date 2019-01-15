@@ -30,6 +30,9 @@ class BibHandler
   # Return true if item's "catalog item type" identifies it as Research
   # Based on https://github.com/NYPL-discovery/discovery-store-poster/blob/33baaad06dd73f45089bb780dbb4afd5a13e2204/lib/models/item-sierra-record.js#L40-L47
   def self.item_has_research_item_type? (item)
+    raise "Error parsing item: no fixedFields" if item['fixedFields'].nil?
+    raise "Error parsing item: invalid fixedFields" if ! item['fixedFields'].is_a?(Hash)
+
     item_type = item['fixedFields'].values.select { |field| field['label'] == 'Item Type' }.pop
     item_type = item_type['value'] if ! item_type.nil? && item_type.is_a?(Hash) && item_type['value'].is_a?(String)
 

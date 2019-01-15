@@ -5,3 +5,11 @@ class AvroError < StandardError
     @object = object
   end
 end
+
+class ScsbError < StandardError
+  attr_reader :object
+
+  def initialize(object)
+    @object = object
+  end
+end

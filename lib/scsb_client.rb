@@ -19,7 +19,7 @@ class ScsbClient
   def items_by_bib_id (id)
     result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: id
 
-    raise "SCSB returned no match for id #{id}" if result['searchResultRows'].empty?
+    raise ScsbError.new(e), "SCSB returned no match for id #{id}" if result['searchResultRows'].empty?
     CustomLogger.debug "Retrieved bib by id #{id} from scsb", result
 
     result['searchResultRows']
@@ -28,7 +28,7 @@ class ScsbClient
   def item_by_barcode (barcode)
     result = self.search fieldName: 'Barcode', fieldValue: barcode
 
-    raise "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
+    raise ScsbError.new(e), "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
 
     result['searchResultRows'].first
   end
@@ -48,7 +48,7 @@ class ScsbClient
     req.body = body.to_json
     res = https.request(req)
 
-    raise ScsbError, "Error response from SCSB API: statusCode=#{res.code}" if res.code.to_i >= 400
+    raise ScsbError.new(e), "Error response from SCSB API: statusCode=#{res.code}" if res.code.to_i >= 400
 
     JSON.parse(res.body)
   end
