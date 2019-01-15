@@ -30,7 +30,7 @@ def handle_event(event:, context:)
       avro_data = record["kinesis"]["data"]
 
       # Determine what schema to use based on eventSourceARN:
-      schema_name = record["eventSourceARN"].split('/').last
+      schema_name = record["eventSourceARN"].split('/').last.sub(/-.*$/, '')
       raise "Unrecognized schema: #{schema_name}. Must be one of #{$avro_decoders.keys.join(', ')}" if ! $avro_decoders.keys.include? schema_name
 
       decoded = $avro_decoders[schema_name].decode avro_data
@@ -38,7 +38,7 @@ def handle_event(event:, context:)
 
       ItemHandler.process decoded if schema_name == 'Item'
       BibHandler.process decoded if schema_name == 'Bib'
-
-      { success: true }
     end
+
+  nil
 end

@@ -15,8 +15,18 @@ describe BibHandler  do
     ENV['NYPL_OAUTH_SECRET'] = Base64.strict_encode64 'fake-secret'
     ENV['NYPL_OAUTH_URL'] = 'https://isso.example.com/'
 
+    ENV['SCSB_API_KEY'] = Base64.strict_encode64 'fake-key-encrypted'
+    ENV['SCSB_API_BASE_URL'] = Base64.strict_encode64 'https://example.com'
+
+    KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {
+      # "Decrypt" by subbing "encrypted" with "decrypted" in string:
+      { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
+    })
+
     $platform_api = PlatformApiClient.new
     $nypl_core = NyplCore.new
+    $scsb_api = ScsbClient.new
+    $notification_email = 'user@example.com'
 
     stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
 
@@ -28,6 +38,11 @@ describe BibHandler  do
       .to_return(status: 200, body: File.read('./spec/fixtures/by_catalog_item_type.json')) 
     stub_request(:get, "https://s3.amazonaws.com/nypl-core-objects-mapping-production/by_sierra_location.json")
       .to_return(status: 200, body: File.read('./spec/fixtures/by_sierra_location.json')) 
+    stub_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
+      .to_return(status: 200, body: "{}" )
+    stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
+      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '10079340' })
+      .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-10079340.raw'))
   end
 
   it "should load mixed bibs lookup" do
@@ -84,5 +99,15 @@ describe BibHandler  do
 
   it "should not consider a bib valid for processing if it's not mixed and its first item is non-research" do
     expect(BibHandler.should_process?({ 'id' => '20918822' })).to eq(false)
+  end
+
+  it "should submit all item barcodes for a valid bib to the sync endpoint" do
+    BibHandler.process({ 'id' => '10079340' })
+
+    expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
+      .with({
+        body: { "user_email" => $notification_email, "barcodes" => [ "32101099235572" ] }
+      })
+    ).to have_been_made
   end
 end
