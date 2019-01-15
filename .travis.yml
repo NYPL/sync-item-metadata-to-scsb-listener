@@ -16,6 +16,7 @@ deploy:
   runtime: ruby2.5
   module_name: app
   handler_name: handle_event
+  timeout: 10
   environment_variables:
   - PLATFORM_API_BASE_URL=https://dev-platform.nypl.org/api/v0.1/
   - NYPL_OAUTH_URL=https://isso.nypl.org/
@@ -37,6 +38,7 @@ deploy:
   runtime: ruby2.5
   module_name: app
   handler_name: handle_event
+  timeout: 10
   environment_variables:
   - PLATFORM_API_BASE_URL=https://qa-platform.nypl.org/api/v0.1/
   - NYPL_OAUTH_URL=https://isso.nypl.org/
@@ -59,6 +61,7 @@ deploy:
   runtime: ruby2.5
   module_name: app
   handler_name: handle_event
+  timeout: 10
   environment_variables:
   - PLATFORM_API_BASE_URL=https://platform.nypl.org/api/v0.1/
   - NYPL_OAUTH_URL=https://isso.nypl.org/
