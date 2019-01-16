@@ -30,7 +30,8 @@ def handle_event(event:, context:)
       avro_data = record["kinesis"]["data"]
 
       # Determine what schema to use based on eventSourceARN:
-      schema_name = record["eventSourceARN"].split('/').last.sub(/-.*$/, '')
+      # ARN will end in a phrase like 'Bib-production', or 'BibBulk-production'
+      schema_name = record["eventSourceARN"].split('/').last.sub(/(Bulk)?(-.*)?$/, '')
       raise "Unrecognized schema: #{schema_name}. Must be one of #{$avro_decoders.keys.join(', ')}" if ! $avro_decoders.keys.include? schema_name
 
       decoded = $avro_decoders[schema_name].decode avro_data
