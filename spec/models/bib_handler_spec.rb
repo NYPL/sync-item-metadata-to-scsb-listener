@@ -30,9 +30,9 @@ describe BibHandler  do
 
     stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
 
-    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=10079340&limit=1")
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=10079340")
       .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-10079340.raw"))
-    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=20918822&limit=1")
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=20918822")
       .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-20918822.raw"))
     stub_request(:get, "https://s3.amazonaws.com/nypl-core-objects-mapping-production/by_catalog_item_type.json")
       .to_return(status: 200, body: File.read('./spec/fixtures/by_catalog_item_type.json')) 
