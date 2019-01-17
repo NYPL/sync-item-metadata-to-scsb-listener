@@ -97,7 +97,10 @@ class BibHandler
     return nil if ! self.should_process? bib
 
     scsb_items = $scsb_api.items_by_bib_id bib['id']
-    raise "Could not retrieve bib from scsb by id", { id: bib['id'] } if scsb_items.nil?
+    if scsb_items.empty?
+      CustomLogger.info "No items returned from SCSB for bibid #{bib['id']}"
+      return nil
+    end
 
     sync_message = { barcodes: scsb_items.map { |item| item['barcode'] }, user_email: $notification_email }
     CustomLogger.debug "Posting message", sync_message
