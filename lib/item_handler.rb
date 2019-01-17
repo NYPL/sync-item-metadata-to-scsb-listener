@@ -4,7 +4,7 @@ class ItemHandler
   def self.should_process? (item)
     is_recap = ! item["location"]["code"].match(/^rc/).nil?
 
-    CustomLogger.debug('Skipping item with non-recap location', { location: item["location"]["code"], itemId: item['id'] }) if ! is_recap
+    CustomLogger.info('Refusing to process item with non-recap location', { location: item["location"]["code"], itemId: item['id'] }) if ! is_recap
 
     is_recap
   end
@@ -19,7 +19,7 @@ class ItemHandler
     CustomLogger.debug "Posting message", sync_message
 
     resp = $platform_api.post 'recap/sync-item-metadata-to-scsb', sync_message, authenticated: true
-    CustomLogger.info "Posted message", sync_message
+    CustomLogger.info "Processed item #{item['id']} by posting message", sync_message
   end
 
 end

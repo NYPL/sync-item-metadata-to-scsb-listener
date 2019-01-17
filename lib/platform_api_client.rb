@@ -53,7 +53,6 @@ class PlatformApiClient
     authenticate! if options[:authenticated]
 
     uri = URI.parse("#{ENV['PLATFORM_API_BASE_URL']}#{path}")
-    # uri = URI.parse("http://host.docker.internal:3002/api/v0.1/#{path}")
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme === 'https'

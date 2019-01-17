@@ -60,6 +60,17 @@ curl -is "https://platform.nypl.org/api/v0.1/items?nyplSource=sierra-nypl&bibId=
 curl -is -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'api_key: [**scsb api key**]' -d '{"fieldName":"OwningInstitutionBibId","fieldValue": "10079340"}' 'https://[**scsb fqdn**]/searchService/search' > spec/fixtures/scsb-api-items-by-bib-id-10079340.raw
 ```
 
+### Representative bibs/items
+
+At writing, the following records serve as good representations of the many different scenarios this app understands:
+
+ * Bib 10079340 has 4 items, all of which have 'rc*' locations and should be pushed to scsb.
+   * Expect item barcodes 33433020768820, 33433020768812, 33433020768838, 33433020768846 when updates occur for bib
+ * Bib 17762923 is not mixed and has a circulating first item, so should not be processed
+ * Item 11907243  has an 'rc*' location and should thus be pushed to scsb (as barcode 3343302076882)
+ * Item 11907244 (represented in `event.item.json`) has an 'rc*' location and should thus be pushed to scsb (as barcode 33433020768838)
+ * Item 21558090 has a non-recap location, so should not be processed
+
 ## Deploy
 
 Deployments are entirely handled by Travis-ci.com. To deploy to development, qa, or production, commit code to the `development`, `qa`, and `master` branches on origin, respectively.

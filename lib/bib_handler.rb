@@ -6,7 +6,9 @@ class BibHandler
 
   # Get the first item associated with the given bib id from ItemService
   def self.first_item_by_bib_id (id) 
-    items = $platform_api.get "items?nyplSource=sierra-nypl&bibId=#{id}&limit=1"
+    # Note that we'd like to pass `&limit=1` here, but ItemService seems to
+    # have a bug ( https://github.com/NYPL-discovery/itemservice/issues/5 )
+    items = $platform_api.get "items?nyplSource=sierra-nypl&bibId=#{id}"
     if (items.nil? || items.empty? || items['data'].nil? || !items['data'].is_a?(Array))
       CustomLogger.error "Bad response from ItemService querying for first item by bib id #{id}", items
       nil
@@ -74,9 +76,20 @@ class BibHandler
     is_mixed_bib
   end
 
-  # Returns true if there's nothing about this bib that allows us to *skip* processing it
+  # Returns true if we should process this bib - either because:
+  #  1. it's mixed, which means its first item may or may not be representative
+  #     of sibling items, which means we have to *assume* it has recap items
+  #  2. its first item has a research Item Type or location, meaning it *may*
+  #     be in recap
   def self.should_process? (bib)
-    is_mixed_bib?(bib) || first_item_is_research?(bib)
+    is_mixed = is_mixed_bib?(bib)
+    return true if is_mixed
+
+    first_item_research = first_item_is_research?(bib)
+    return true if first_item_research
+
+    CustomLogger.info "Refusing to process bib #{bib['id']} because is_mixed=#{is_mixed}, first_item_research=#{first_item_research}"
+    false
   end
 
   # Evaluate bib to determine if we should process it, and then do so
@@ -90,7 +103,7 @@ class BibHandler
     CustomLogger.debug "Posting message", sync_message
 
     resp = $platform_api.post 'recap/sync-item-metadata-to-scsb', sync_message, authenticated: true
-    CustomLogger.info "Posted message", sync_message
+    CustomLogger.info "Processed bib #{bib['id']} by posting message", sync_message
   end
 
 end
