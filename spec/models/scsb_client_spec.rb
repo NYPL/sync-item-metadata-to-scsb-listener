@@ -13,7 +13,7 @@ describe ScsbClient do
     })
 
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
-      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '10079340' })
+      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b10079340x' })
       .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-10079340.raw'))
 
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")

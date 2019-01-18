@@ -41,8 +41,13 @@ describe BibHandler  do
     stub_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
       .to_return(status: 200, body: "{}" )
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
-      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '10079340' })
+      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b10079340x' })
       .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-10079340.raw'))
+    stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
+      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b114071664' })
+      .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-11407166.raw'))
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=11407166")
+      .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-11407166.raw"))
   end
 
   it "should load mixed bibs lookup" do
@@ -110,4 +115,15 @@ describe BibHandler  do
       })
     ).to have_been_made
   end
+
+  it "should not submit anything if bib determined to be possibly in recap but SCSB returns no items" do
+    BibHandler.process({ 'id' => '11407166' })
+
+    expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
+      .with({
+        body: { "user_email" => $notification_email, "barcodes" => [ "32101099235572" ] }
+      })
+    ).to have_not_been_made
+  end
+
 end

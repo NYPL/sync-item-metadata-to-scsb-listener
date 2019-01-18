@@ -2,6 +2,18 @@
 
 This is a small Ruby app deployed as Kinesis Stream listener, sniffing for Bib/Item updates that should trigger syncing metadata to SCSB.
 
+The app listens on all Bib/Item streams (including BibBulk and ItemBulk). When it receives a record, the process is as follows:
+
+**On receiving Bib updates**:
+ 1. Check bib id against list of known mixed bibs. If match found, we *assume* it has items in SCSB.
+ 2. Query items service for first items associated with bibid. If item is a research item (by checking Item Type & location), we assume there may be items in SCSB
+
+If either check above concludes that there *may* be items in SCSB, we hit the `/searchService/search` endpoint with `fieldValue: ".b[BIBID][SIERRAMOD11CHECKDIGIT]"` and `fieldName: "OwningInstitutionBibId"` to identify all item barcodes we'll need to queue sync jobs for. Create a metadata sync job using the Platform API's recap/sync-item-metadata-to-scsb endpoint.
+
+**On receiving Item updates**:
+ 1. Check item's location for presense of the Recap "rc" prefix. If found, item assume to exist an SCSB. Hit the scsb `/searchService/search` endpoint with `fieldValue: ".i[ITEMID][SIERRAMOD11CHECKDIGIT]"` and `fieldName: "OwningInstitutionItemId"` to double check it's in Recap and that we have the right barcode.
+ 2. Create a metadata sync job using the Platform API's recap/sync-item-metadata-to-scsb endpoint.
+
 ## Setup
 
 ### Installation
@@ -53,7 +65,7 @@ bundle exec rspec
 Fixtures are stored in `./spec/fixtures`. Those ending in `.raw` are HTTP responses captured using `curl -is` as follows:
 
 ```
-curl -is "https://platform.nypl.org/api/v0.1/items?nyplSource=sierra-nypl&bibId=10079340&limit=1" -H "authorization: Bearer [**relevant access token**]" > ./spec/fixtures/platform-api-items-by-bib-10079340.raw
+curl -is "https://platform.nypl.org/api/v0.1/items?nyplSource=sierra-nypl&bibId=10079340" -H "authorization: Bearer [**relevant access token**]" > ./spec/fixtures/platform-api-items-by-bib-10079340.raw
 ```
 
 ```
@@ -64,8 +76,7 @@ curl -is -X POST --header 'Content-Type: application/json' --header 'Accept: app
 
 At writing, the following records serve as good representations of the many different scenarios this app understands:
 
- * Bib 10079340 has 4 items, all of which have 'rc*' locations and should be pushed to scsb.
-   * Expect item barcodes 33433020768820, 33433020768812, 33433020768838, 33433020768846 when updates occur for bib
+ * Bib 16797396 has 1 item, which has a research Item Type (55), so sole item (barcode 33433073119806) should be pushed to scsb.
  * Bib 17762923 is not mixed and has a circulating first item, so should not be processed
  * Item 11907243  has an 'rc*' location and should thus be pushed to scsb (as barcode 3343302076882)
  * Item 11907244 (represented in `event.item.json`) has an 'rc*' location and should thus be pushed to scsb (as barcode 33433020768838)

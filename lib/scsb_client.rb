@@ -4,6 +4,7 @@ require 'uri'
 
 require_relative 'errors'
 require_relative 'kms_client'
+require_relative 'sierra_mod_11'
 
 class ScsbClient
 
@@ -19,9 +20,11 @@ class ScsbClient
   # Get items by bibid
   # Returns [] if no items found
   def items_by_bib_id (id)
-    result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: id
+    # Add prefix and suffix to id to match id in scsb:
+    bookended_id = ".b#{SierraMod11.mod11(id)}"
+    result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: bookended_id
 
-    CustomLogger.debug "Retrieved bib by id #{id} from scsb", result
+    CustomLogger.debug "Retrieved items by bib id #{id} from scsb", result
 
     result['searchResultRows']
   end

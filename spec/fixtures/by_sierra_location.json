@@ -1,4 +1,5 @@
 {
   "rc2ma":{"code":"rc2ma","label":"Offsite","locationsApiSlug":null,"collectionTypes":["Research"],"recapLocation":null,"sierraDeliveryLocations":[],"requestable":true,"deliveryLocationTypes":[]},
-  "hfa0f":{"code":"hfa0f","label":"Hamilton Fish Park Fiction","locationsApiSlug":null,"collectionTypes":["Branch"],"recapLocation":null,"sierraDeliveryLocations":[],"requestable":false,"deliveryLocationTypes":[]}
+  "hfa0f":{"code":"hfa0f","label":"Hamilton Fish Park Fiction","locationsApiSlug":null,"collectionTypes":["Branch"],"recapLocation":null,"sierraDeliveryLocations":[],"requestable":false,"deliveryLocationTypes":[]},
+  "myh32":{"code":"myh32","label":"Performing Arts Research Collections - Recorded Sound","locationsApiSlug":null,"collectionTypes":["Research"],"recapLocation":null,"sierraDeliveryLocations":[{"code":"myr","label":"Performing Arts Research Collections","locationsApiSlug":"lpa","deliveryLocationTypes":["Research"]}],"requestable":false,"deliveryLocationTypes":[]}
 }
