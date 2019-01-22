@@ -41,10 +41,10 @@ describe BibHandler  do
     stub_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
       .to_return(status: 200, body: "{}" )
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
-      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b10079340x' })
+      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b10079340x', 'owningInstitutions': ['NYPL'] })
       .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-10079340.raw'))
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
-      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b114071664' })
+      .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b114071664', 'owningInstitutions': ['NYPL'] })
       .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-11407166.raw'))
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=11407166")
       .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-11407166.raw"))
@@ -106,12 +106,33 @@ describe BibHandler  do
     expect(BibHandler.should_process?({ 'id' => '20918822' })).to eq(false)
   end
 
-  it "should submit all item barcodes for a valid bib to the sync endpoint" do
+  describe "#process" do
+    before(:each) do
+      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=19822713")
+        .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-19822713.raw"))
+      stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
+        .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b198227139', 'owningInstitutions': ['NYPL'] })
+        .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-b198227139.raw'))
+    end
+
+    it "should submit all item barcodes for a valid bib to the sync endpoint" do
+      BibHandler.process({ 'id' => '19822713' })
+
+      expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
+        .with({
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433110812959' ] }
+        })
+      ).to have_been_made
+    end
+  end
+
+  it "should submit all item barcodes for a serial bib to the sync endpoint" do
     BibHandler.process({ 'id' => '10079340' })
 
+    # This is a serial with 4 items in scsb
     expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
       .with({
-        body: { "user_email" => $notification_email, "barcodes" => [ "32101099235572" ] }
+        body: { "user_email" => $notification_email, "barcodes" => [ '33433020768820', '33433020768838', '33433020768846', '33433020768812' ] }
       })
     ).to have_been_made
   end
@@ -121,9 +142,8 @@ describe BibHandler  do
 
     expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
       .with({
-        body: { "user_email" => $notification_email, "barcodes" => [ "32101099235572" ] }
+        body: { "user_email" => $notification_email, "barcodes" => [ "32101099235572" ], 'owningInstitutions': ['NYPL'] }
       })
     ).to have_not_been_made
   end
-
 end

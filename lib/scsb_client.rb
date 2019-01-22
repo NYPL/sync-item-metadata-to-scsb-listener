@@ -17,12 +17,25 @@ class ScsbClient
     @api_base_url = kms_client.decrypt(ENV['SCSB_API_BASE_URL']).strip
   end
 
+  # Get barcodes by bibid
+  # Returns [] if no barcodes identified
+  def barcodes_by_bib_id (id)
+    items_by_bib_id(id).inject([]) do |barcodes, item|
+      barcodes << item['barcode'] if item['barcode']
+      # Add nested records (typical for serials):
+      serial_barcodes = item['searchItemResultRows']
+        .map { |serial_row| serial_row['barcode'] }
+        .compact
+      barcodes + serial_barcodes
+    end
+  end
+
   # Get items by bibid
   # Returns [] if no items found
   def items_by_bib_id (id)
     # Add prefix and suffix to id to match id in scsb:
     bookended_id = ".b#{SierraMod11.mod11(id)}"
-    result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: bookended_id
+    result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: bookended_id, "owningInstitutions": [ "NYPL" ]
 
     CustomLogger.debug "Retrieved items by bib id #{id} from scsb", result
 
@@ -30,7 +43,7 @@ class ScsbClient
   end
 
   def item_by_barcode (barcode)
-    result = self.search fieldName: 'Barcode', fieldValue: barcode
+    result = self.search fieldName: 'Barcode', fieldValue: barcode, "owningInstitutions": [ "NYPL" ]
 
     raise ScsbError.new(e), "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
 

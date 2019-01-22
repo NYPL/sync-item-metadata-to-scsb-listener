@@ -76,9 +76,9 @@ curl -is -X POST --header 'Content-Type: application/json' --header 'Accept: app
 
 At writing, the following records serve as good representations of the many different scenarios this app understands:
 
- * Bib 16797396 has 1 item, which has a research Item Type (55), so sole item (barcode 33433073119806) should be pushed to scsb.
+ * Bib 16797396 has 1 item, which has a research Item Type (55), so listener should query by OwningInsitutionBibId (".b167973964") to identify the sole item (barcode 33433073119806) be synced.
+ * Bib 10079340 has four items, the first of which has a research Item Type and rc* location, so SCSB will be queried to look up all four nested serial item barcodes to sync (barcodes "33433020768846", "33433020768838", "33433020768812", "33433020768820") * Item 11907243  has an 'rc*' location and should thus be pushed to scsb (as barcode 3343302076882)
  * Bib 17762923 is not mixed and has a circulating first item, so should not be processed
- * Item 11907243  has an 'rc*' location and should thus be pushed to scsb (as barcode 3343302076882)
  * Item 11907244 (represented in `event.item.json`) has an 'rc*' location and should thus be pushed to scsb (as barcode 33433020768838)
  * Item 21558090 has a non-recap location, so should not be processed
 

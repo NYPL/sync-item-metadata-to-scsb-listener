@@ -96,13 +96,13 @@ class BibHandler
   def self.process (bib)
     return nil if ! self.should_process? bib
 
-    scsb_items = $scsb_api.items_by_bib_id bib['id']
-    if scsb_items.empty?
+    scsb_barcodes = $scsb_api.barcodes_by_bib_id bib['id']
+    if scsb_barcodes.empty?
       CustomLogger.info "No items returned from SCSB for bibid #{bib['id']}"
       return nil
     end
 
-    sync_message = { barcodes: scsb_items.map { |item| item['barcode'] }, user_email: $notification_email }
+    sync_message = { barcodes: scsb_barcodes, user_email: $notification_email }
     CustomLogger.debug "Posting message", sync_message
 
     resp = $platform_api.post 'recap/sync-item-metadata-to-scsb', sync_message, authenticated: true
