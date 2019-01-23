@@ -45,8 +45,8 @@ class AvroDecoder
       raise AvroError.new(e), "Retrieved #{name} schema is malformed: #{response.body}"
     end
 
-    raise AvroError.new(e), "Failed to retrieve #{name} schema: statusCode=#{response_hash["statusCode"]}" if response_hash["statusCode"] >= 400
-    raise AvroError.new(e), "Retrieved #{name} schema is malformed" if response_hash["data"].nil? || response_hash["data"]["schema"].nil?
+    raise AvroError.new, "Failed to retrieve #{name} schema: statusCode=#{response_hash["statusCode"]}" if response_hash["statusCode"] >= 400
+    raise AvroError.new, "Retrieved #{name} schema is malformed" if response_hash["data"].nil? || response_hash["data"]["schema"].nil?
 
     self.new response_hash["data"]["schema"]
   end 

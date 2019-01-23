@@ -45,7 +45,7 @@ class ScsbClient
   def item_by_barcode (barcode)
     result = self.search fieldName: 'Barcode', fieldValue: barcode, "owningInstitutions": [ "NYPL" ]
 
-    raise ScsbError.new(e), "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
+    raise ScsbError.new, "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
 
     result['searchResultRows'].first
   end
@@ -65,7 +65,7 @@ class ScsbClient
     req.body = body.to_json
     res = https.request(req)
 
-    raise ScsbError.new(e), "Error response from SCSB API: statusCode=#{res.code}" if res.code.to_i >= 400
+    raise ScsbError.new, "Error response from SCSB API: statusCode=#{res.code}" if res.code.to_i >= 400
 
     JSON.parse(res.body)
   end

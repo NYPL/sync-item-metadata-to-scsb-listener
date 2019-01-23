@@ -82,7 +82,7 @@ class PlatformApiClient
       # Likely an expired access-token; Wipe it for next run
       @access_token = nil
     else
-      raise "Error posting to #{path} #{response.code}: #{response.body}"
+      raise "Error parsing response (#{response.code}): #{response.body}"
       {}
     end
   end
