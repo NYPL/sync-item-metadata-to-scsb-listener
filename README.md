@@ -12,7 +12,8 @@ If either check above concludes that there *may* be items in SCSB, we hit the `/
 
 **On receiving Item updates**:
  1. Check item's location for presense of the Recap "rc" prefix. If found, item assume to exist an SCSB. Hit the scsb `/searchService/search` endpoint with `fieldValue: ".i[ITEMID][SIERRAMOD11CHECKDIGIT]"` and `fieldName: "OwningInstitutionItemId"` to double check it's in Recap and that we have the right barcode.
- 2. Create a metadata sync job using the Platform API's recap/sync-item-metadata-to-scsb endpoint.
+ 2. Also check SCSB response for returned "owningInstitutionBibId" to determine if the SCSB bnum disagrees with the local Sierra bnum. If a mismatch is found, sync job should be processed as a "transfer". Otherwise it's a simple "update"
+ 2. Create a "transfer"/"update sync job using the Platform API's recap/sync-item-metadata-to-scsb endpoint.
 
 ## Setup
 

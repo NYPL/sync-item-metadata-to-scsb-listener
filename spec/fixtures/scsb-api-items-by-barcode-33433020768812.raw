@@ -1,0 +1,7 @@
+HTTP/1.1 200 
+Date: Thu, 24 Jan 2019 17:21:28 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+
+{"searchResultRows":[{"bibId":7031249,"title":"Washington report.","author":" American Security Council.  ","publisher":null,"publisherDate":null,"owningInstitution":"NYPL","customerCode":null,"collectionGroupDesignation":null,"useRestriction":null,"barcode":null,"summaryHoldings":"May 1966-Dec. 1967","availability":"Available","leaderMaterialType":"Serial","selected":false,"showItems":true,"selectAllItems":false,"searchItemResultRows":[{"callNumber":"M-11 5205","chronologyAndEnum":"May 1966-Dec. 1967","customerCode":"NA","barcode":"33433020768812","useRestriction":"In Library Use","collectionGroupDesignation":"Shared","availability":"Available","selectedItem":false,"itemId":11502607,"owningInstitutionItemId":".i119072427","owningInstitutionHoldingsId":"3da2a6c3-53ba-4482-906d-cef5d35089fd"}],"itemId":null,"owningInstitutionBibId":".b10079340x","owningInstitutionHoldingsId":null,"owningInstitutionItemId":null,"requestPosition":null,"patronBarcode":null,"requestingInstitution":null,"deliveryLocation":null,"requestType":null,"requestNotes":null}],"totalPageCount":1,"totalBibRecordsCount":"1","totalItemRecordsCount":"1","totalRecordsCount":"1","showTotalCount":false,"errorMessage":null}

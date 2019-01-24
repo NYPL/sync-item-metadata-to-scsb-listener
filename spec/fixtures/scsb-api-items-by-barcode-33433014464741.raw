@@ -1,0 +1,7 @@
+HTTP/1.1 200 
+Date: Thu, 24 Jan 2019 19:49:41 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+
+{"searchResultRows":[{"bibId":6771688,"title":"al-Alfāẓ al-muʻarrabah wa-al-mawḍūʻah al-wāridah fī al-sanawāt al-ʻashr al-rābiʻah min Majallat al-Majmaʻ al-ʻIlmī al-ʻArabī.","author":"Kaḥḥālah, ʻUmar Riḍā.   ","publisher":"Majmaʻ al-Lughah al-ʻArabīyah bi-Dimashq,","publisherDate":"1972.","owningInstitution":"NYPL","customerCode":"NA","collectionGroupDesignation":"Open","useRestriction":"No Restrictions","barcode":"33433014464741","summaryHoldings":"","availability":"Available","leaderMaterialType":"Monograph","selected":false,"showItems":false,"selectAllItems":false,"searchItemResultRows":[],"itemId":11035542,"owningInstitutionBibId":".b103908675","owningInstitutionHoldingsId":"6367f021-8772-4308-9308-f73c608e77a3","owningInstitutionItemId":".i100934948","requestPosition":null,"patronBarcode":null,"requestingInstitution":null,"deliveryLocation":null,"requestType":null,"requestNotes":null}],"totalPageCount":1,"totalBibRecordsCount":"1","totalItemRecordsCount":"1","totalRecordsCount":"1","showTotalCount":false,"errorMessage":null}
