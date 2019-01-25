@@ -13,9 +13,9 @@ class ItemHandler
     is_recap
   end
 
-  # Given a sierraitem (Hash), returns the padded form (prefix + mod11 suffix)
+  # Given a sierraitem (Hash), returns the padded form ('b' prefix + mod11 suffix)
   def self.padded_bnum_for_sierra_item (sierra_item)
-    ".b#{SierraMod11.mod11(sierra_item['bibIds'].first)}"
+    "b#{SierraMod11.mod11(sierra_item['bibIds'].first)}"
   end
 
   # Return true if bibId in sierra_item mismatched with owningInstitutionBibId
@@ -25,7 +25,7 @@ class ItemHandler
     # Strip ".b" prefix and sierra mod11 check digit
     scsb_bnum = scsb_item['owningInstitutionBibId']
     padded_bnum = self.padded_bnum_for_sierra_item sierra_item
-    mismatched = scsb_bnum != padded_bnum
+    mismatched = scsb_bnum != ".#{padded_bnum}"
 
     CustomLogger.debug "Detecting bnum discrepancy: mismatched=#{mismatched}", { scsb_bnum: scsb_bnum, local_bnum_with_padding: padded_bnum, local_bnum: sierra_item['bibIds'].first, mismatched: mismatched }
 

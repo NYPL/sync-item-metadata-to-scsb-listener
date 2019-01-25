@@ -26,7 +26,7 @@ describe ItemHandler  do
 
   describe '#padded_bnum_for_sierra_item' do
     it 'should compute padded bib id' do
-      expect(ItemHandler.padded_bnum_for_sierra_item({ 'bibIds' => [ '1234' ] })).to eq('.b12348')
+      expect(ItemHandler.padded_bnum_for_sierra_item({ 'bibIds' => [ '1234' ] })).to eq('b12348')
     end
   end
 
@@ -109,7 +109,7 @@ describe ItemHandler  do
       # This is a serial with 4 items in scsb
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
-          body: { "user_email" => $notification_email, "barcodes" => [ '33433020768812' ], "action" => 'transfer', "bib_record_number" => '.b12348' }
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433020768812' ], "action" => 'transfer', "bib_record_number" => 'b12348' }
         })
       ).to have_been_made
     end
@@ -136,7 +136,7 @@ describe ItemHandler  do
 
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
-          body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ], "action" => 'transfer', "bib_record_number" => '.b12348' }
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ], "action" => 'transfer', "bib_record_number" => 'b12348' }
         })
       ).to have_been_made
     end
