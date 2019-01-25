@@ -106,6 +106,17 @@ describe BibHandler  do
     expect(BibHandler.should_process?({ 'id' => '20918822' })).to eq(false)
   end
 
+  describe "#should_process?" do
+    before(:each) do
+      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=fakebibid")
+        .to_return(status: 404, body: '{"statusCode":404,"type":"exception","message":"No records found","error":[],"debugInfo":[]}')
+    end
+
+    it "should quietly fail to process any bib for which there are no items" do
+      expect(BibHandler.should_process?({ 'id' => 'fakebibid' })).to eq(false)
+    end
+  end
+
   describe "#process" do
     before(:each) do
       stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=19822713")
@@ -124,6 +135,7 @@ describe BibHandler  do
         })
       ).to have_been_made
     end
+
   end
 
   it "should submit all item barcodes for a serial bib to the sync endpoint" do

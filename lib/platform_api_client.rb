@@ -78,11 +78,13 @@ class PlatformApiClient
   def parse_json_response (response)
     if response.code == "200"
       JSON.parse(response.body)
+    elsif response.code == "404"
+      JSON.parse(response.body)
     elsif response.code == "401"
       # Likely an expired access-token; Wipe it for next run
       @access_token = nil
     else
-      raise "Error parsing response (#{response.code}): #{response.body}"
+      raise "Error interpretting response (#{response.code}): #{response.body}"
       {}
     end
   end

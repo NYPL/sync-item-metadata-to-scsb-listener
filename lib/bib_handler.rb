@@ -23,6 +23,9 @@ class BibHandler
 
     first_item = first_item_by_bib_id bib['id']
 
+    # If no items matched for the bnum, return false
+    return false if first_item.nil?
+
     CustomLogger.debug "Got first item for bib #{bib['id']}", first_item
 
     # Check the two relevant scenarios that obligate the item to be Research:
