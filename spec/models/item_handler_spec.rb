@@ -3,18 +3,26 @@ require 'webmock/rspec'
 require 'aws-sdk-kms'
 
 describe ItemHandler  do
-  it "should consider an item with a rc location valid for processing" do
-    rc_item = load_fixture 'rc-item.json'
 
-    expect(ItemHandler.should_process?(rc_item)).to eq(true)
+  describe '#should_process?' do
+    it "should consider an item with a rc location valid for processing" do
+      rc_item = load_fixture 'rc-item.json'
+
+      expect(ItemHandler.should_process?(rc_item)).to eq(true)
+    end
+
+    it "should consider an item without a rc location invalid for processing" do
+      rc_item = load_fixture 'non-rc-item.json'
+
+      expect(ItemHandler.should_process?(rc_item)).to eq(false)
+    end
+
+    it "should return false for deleted item" do
+      deleted_item = load_fixture 'deleted-item.json'
+
+      expect(ItemHandler.should_process?(deleted_item)).to eq(false)
+    end
   end
-
-  it "should consider an item without a rc location invalid for processing" do
-    rc_item = load_fixture 'non-rc-item.json'
-
-    expect(ItemHandler.should_process?(rc_item)).to eq(false)
-  end
-
 
   describe '#padded_bnum_for_sierra_item' do
     it 'should compute padded bib id' do

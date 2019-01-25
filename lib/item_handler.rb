@@ -3,6 +3,9 @@ require_relative 'sierra_mod_11'
 
 class ItemHandler
   def self.should_process? (item)
+    # Return false if item is missing required fields (i.e. deleted)
+    return false if ! item.is_a?(Hash) || ! item['location'].is_a?(Hash) || ! item['location']['code'].is_a?(String)
+
     is_recap = ! item["location"]["code"].match(/^rc/).nil?
 
     CustomLogger.info('Refusing to process item with non-recap location', { location: item["location"]["code"], itemId: item['id'] }) if ! is_recap

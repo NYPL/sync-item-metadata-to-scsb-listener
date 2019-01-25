@@ -94,26 +94,28 @@ describe BibHandler  do
     expect(is_research).to eq(false)
   end
 
-  it "should consider a bib valid for processing if it is mixed" do
-    expect(BibHandler.should_process?({ 'id' => '100000885' })).to eq(true)
-  end
-
-  it "should consider a bib valid for processing if its first item is research" do
-    expect(BibHandler.should_process?({ 'id' => '10079340' })).to eq(true)
-  end
-
-  it "should not consider a bib valid for processing if it's not mixed and its first item is non-research" do
-    expect(BibHandler.should_process?({ 'id' => '20918822' })).to eq(false)
-  end
-
-  describe "#should_process?" do
-    before(:each) do
-      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=fakebibid")
-        .to_return(status: 404, body: '{"statusCode":404,"type":"exception","message":"No records found","error":[],"debugInfo":[]}')
+  describe '#should_process?' do
+    it "should consider a bib valid for processing if it is mixed" do
+      expect(BibHandler.should_process?({ 'id' => '100000885' })).to eq(true)
     end
 
-    it "should quietly fail to process any bib for which there are no items" do
-      expect(BibHandler.should_process?({ 'id' => 'fakebibid' })).to eq(false)
+    it "should consider a bib valid for processing if its first item is research" do
+      expect(BibHandler.should_process?({ 'id' => '10079340' })).to eq(true)
+    end
+
+    it "should not consider a bib valid for processing if it's not mixed and its first item is non-research" do
+      expect(BibHandler.should_process?({ 'id' => '20918822' })).to eq(false)
+    end
+
+    describe "#should_process?" do
+      before(:each) do
+        stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}items?nyplSource=sierra-nypl&bibId=fakebibid")
+          .to_return(status: 404, body: '{"statusCode":404,"type":"exception","message":"No records found","error":[],"debugInfo":[]}')
+      end
+
+      it "should quietly fail to process any bib for which there are no items" do
+        expect(BibHandler.should_process?({ 'id' => 'fakebibid' })).to eq(false)
+      end
     end
   end
 
