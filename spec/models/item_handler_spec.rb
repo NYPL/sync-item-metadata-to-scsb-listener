@@ -93,7 +93,7 @@ describe ItemHandler  do
       # This is a serial with 4 items in scsb
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
-          body: { "user_email" => $notification_email, "barcodes" => [ '33433020768812' ] }
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433020768812' ], "source" => "bib-item-store-update" }
         })
       ).to have_been_made
     end
@@ -109,7 +109,7 @@ describe ItemHandler  do
       # This is a serial with 4 items in scsb
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
-          body: { "user_email" => $notification_email, "barcodes" => [ '33433020768812' ], "action" => 'transfer', "bib_record_number" => 'b12348' }
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433020768812' ], "action" => 'transfer', "bib_record_number" => 'b12348', "source" => "bib-item-store-update"  }
         })
       ).to have_been_made
     end
@@ -122,7 +122,7 @@ describe ItemHandler  do
 
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
-          body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ] }
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ], "source" => "bib-item-store-update"  }
         })
       ).to have_been_made
     end
@@ -136,7 +136,7 @@ describe ItemHandler  do
 
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
-          body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ], "action" => 'transfer', "bib_record_number" => 'b12348' }
+          body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ], "action" => 'transfer', "bib_record_number" => 'b12348', "source" => "bib-item-store-update"  }
         })
       ).to have_been_made
     end

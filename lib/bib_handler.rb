@@ -105,7 +105,7 @@ class BibHandler
       return nil
     end
 
-    sync_message = { barcodes: scsb_barcodes, user_email: $notification_email }
+    sync_message = { barcodes: scsb_barcodes, user_email: $notification_email, source: 'bib-item-store-update' }
     CustomLogger.debug "Posting message", sync_message
 
     resp = $platform_api.post 'recap/sync-item-metadata-to-scsb', sync_message, authenticated: true

@@ -38,7 +38,7 @@ class ItemHandler
     scsb_item = $scsb_api.item_by_barcode item['barcode']
     raise "Could not retrieve item from scsb by barcode", { barcode: item['barcode'], itemId: item['id'] } if scsb_item.nil?
 
-    sync_message = { barcodes: [ item['barcode'] ], user_email: $notification_email }
+    sync_message = { barcodes: [ item['barcode'] ], user_email: $notification_email, source: 'bib-item-store-update' }
 
     # Determine if the sync job is a transfer by checking for mismatched bnums:
     if self.item_bnum_mismatch(item, scsb_item)
