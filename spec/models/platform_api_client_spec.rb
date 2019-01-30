@@ -14,6 +14,7 @@ describe PlatformApiClient do
       { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
     })
 
+    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 
     stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
     stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/b12082323").to_return(status: 200, body: File.read('./spec/fixtures/bib.json'))

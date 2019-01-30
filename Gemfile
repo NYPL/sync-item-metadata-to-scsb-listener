@@ -3,9 +3,9 @@ source 'https://rubygems.org'
 gem 'json'
 gem 'aws-sdk'
 gem 'avro'
-gem 'oauth2'
+gem 'nypl_log_formatter', '~> 0.1.2'
 
-group :test do
+group :dev, :test do
   gem 'rspec'
   gem 'webmock'
 end

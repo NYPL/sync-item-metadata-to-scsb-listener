@@ -1,10 +1,8 @@
-require 'oauth2'
 require 'net/http'
 require 'net/https'
 require 'uri'
 
 require_relative 'kms_client'
-require_relative 'custom_logger'
 
 class PlatformApiClient
   def initialize
@@ -27,7 +25,7 @@ class PlatformApiClient
 
     uri = URI.parse("#{ENV['PLATFORM_API_BASE_URL']}#{path}")
 
-    CustomLogger.debug "Getting from platform api", { uri: uri }
+    $logger.debug "Getting from platform api", { uri: uri }
 
     begin
       request = Net::HTTP::Get.new(uri)
@@ -36,7 +34,7 @@ class PlatformApiClient
         http.request(request)
       end
 
-      CustomLogger.debug "Got platform api response", { code: response.code, body: response.body }
+      $logger.debug "Got platform api response", { code: response.code, body: response.body }
 
       parse_json_response response
 
@@ -60,7 +58,7 @@ class PlatformApiClient
     request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
     request.body = body.to_json
 
-    CustomLogger.debug "Posting to platform api", { uri: uri, body: body }
+    $logger.debug "Posting to platform api", { uri: uri, body: body }
 
     # Add bearer token header
     request['Authorization'] = "Bearer #{@access_token}" if options[:authenticated]
@@ -68,7 +66,7 @@ class PlatformApiClient
     # Execute request:
     response = http.request(request)
 
-    CustomLogger.debug "Got platform api response", { code: response.code, body: response.body }
+    $logger.debug "Got platform api response", { code: response.code, body: response.body }
   
     parse_json_response response
   end

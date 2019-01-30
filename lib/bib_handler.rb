@@ -1,4 +1,3 @@
-require_relative 'custom_logger'
 require_relative 'nypl_core'
 
 class BibHandler
@@ -10,7 +9,7 @@ class BibHandler
     # have a bug ( https://github.com/NYPL-discovery/itemservice/issues/5 )
     items = $platform_api.get "items?nyplSource=sierra-nypl&bibId=#{id}"
     if (items.nil? || items.empty? || items['data'].nil? || !items['data'].is_a?(Array))
-      CustomLogger.error "Bad response from ItemService querying for first item by bib id #{id}", items
+      $logger.error "Bad response from ItemService querying for first item by bib id #{id}", items
       nil
     else
       items['data'][0]
@@ -19,14 +18,14 @@ class BibHandler
 
   # Determine if the first item of the given bib is a Research item
   def self.first_item_is_research? (bib)
-    CustomLogger.debug "Fetching first item for bib #{bib['id']}"
+    $logger.debug "Fetching first item for bib #{bib['id']}"
 
     first_item = first_item_by_bib_id bib['id']
 
     # If no items matched for the bnum, return false
     return false if first_item.nil?
 
-    CustomLogger.debug "Got first item for bib #{bib['id']}", first_item
+    $logger.debug "Got first item for bib #{bib['id']}", first_item
 
     # Check the two relevant scenarios that obligate the item to be Research:
     item_has_research_item_type?(first_item) || item_has_research_location?(first_item)
@@ -45,7 +44,7 @@ class BibHandler
 
     mapped_item_type_is_research = mapped_item_type.is_a?(Hash) && mapped_item_type['collectionType'].is_a?(Array) && mapped_item_type['collectionType'].include?('Research')
 
-    CustomLogger.debug "Calculating item_has_research_item_type=#{mapped_item_type_is_research}", { item_type: item_type, mapped_item_type: mapped_item_type }
+    $logger.debug "Calculating item_has_research_item_type=#{mapped_item_type_is_research}", { item_type: item_type, mapped_item_type: mapped_item_type }
 
     mapped_item_type_is_research
   end
@@ -58,7 +57,7 @@ class BibHandler
     holding_location_collection_type = nil
     holding_location_collection_type = mapped_location['collectionTypes'][0] if mapped_location.is_a?(Hash) && mapped_location['collectionTypes'] && mapped_location['collectionTypes'] == 1
 
-    CustomLogger.debug "Calculating holding location collection type as #{mapped_location['collectionTypes'][0]}", { location_code: item['location']['code'], mapped_location: mapped_location }
+    $logger.debug "Calculating holding location collection type as #{mapped_location['collectionTypes'][0]}", { location_code: item['location']['code'], mapped_location: mapped_location }
 
     holding_location_collection_type === 'Research'
   end
@@ -70,11 +69,11 @@ class BibHandler
         .split("\n")
         .map { |bnum| bnum.strip.sub(/^b/, '') }
 
-      CustomLogger.debug "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
+      $logger.debug "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
     end
 
     is_mixed_bib = @@mixed_bib_ids.include? bib['id']
-    CustomLogger.debug "Determined is_mixed_bib=#{is_mixed_bib} for #{bib['id']}"
+    $logger.debug "Determined is_mixed_bib=#{is_mixed_bib} for #{bib['id']}"
 
     is_mixed_bib
   end
@@ -91,7 +90,7 @@ class BibHandler
     first_item_research = first_item_is_research?(bib)
     return true if first_item_research
 
-    CustomLogger.info "Refusing to process bib #{bib['id']} because is_mixed=#{is_mixed}, first_item_research=#{first_item_research}"
+    $logger.info "Refusing to process bib #{bib['id']} because is_mixed=#{is_mixed}, first_item_research=#{first_item_research}"
     false
   end
 
@@ -101,15 +100,15 @@ class BibHandler
 
     scsb_barcodes = $scsb_api.barcodes_by_bib_id bib['id']
     if scsb_barcodes.empty?
-      CustomLogger.info "No items returned from SCSB for bibid #{bib['id']}"
+      $logger.info "No items returned from SCSB for bibid #{bib['id']}"
       return nil
     end
 
     sync_message = { barcodes: scsb_barcodes, user_email: $notification_email, source: 'bib-item-store-update' }
-    CustomLogger.debug "Posting message", sync_message
+    $logger.debug "Posting message", sync_message
 
     resp = $platform_api.post 'recap/sync-item-metadata-to-scsb', sync_message, authenticated: true
-    CustomLogger.info "Processed bib #{bib['id']} by posting message", sync_message
+    $logger.info "Processed bib #{bib['id']} by posting message", sync_message
   end
 
 end

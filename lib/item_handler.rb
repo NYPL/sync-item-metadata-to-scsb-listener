@@ -1,4 +1,3 @@
-require_relative 'custom_logger'
 require_relative 'sierra_mod_11'
 
 class ItemHandler
@@ -8,7 +7,7 @@ class ItemHandler
 
     is_recap = ! item["location"]["code"].match(/^rc/).nil?
 
-    CustomLogger.info('Refusing to process item with non-recap location', { location: item["location"]["code"], itemId: item['id'] }) if ! is_recap
+    $logger.debug 'Refusing to process item with non-recap location', { location: item["location"]["code"], itemId: item['id'] } if ! is_recap
 
     is_recap
   end
@@ -27,7 +26,7 @@ class ItemHandler
     padded_bnum = self.padded_bnum_for_sierra_item sierra_item
     mismatched = scsb_bnum != ".#{padded_bnum}"
 
-    CustomLogger.debug "Detecting bnum discrepancy: mismatched=#{mismatched}", { scsb_bnum: scsb_bnum, local_bnum_with_padding: padded_bnum, local_bnum: sierra_item['bibIds'].first, mismatched: mismatched }
+    $logger.debug "Detecting bnum discrepancy: mismatched=#{mismatched}", { scsb_bnum: scsb_bnum, local_bnum_with_padding: padded_bnum, local_bnum: sierra_item['bibIds'].first, mismatched: mismatched }
 
     mismatched
   end
@@ -45,13 +44,13 @@ class ItemHandler
       sync_message[:action] = 'transfer'
       sync_message[:bib_record_number] = self.padded_bnum_for_sierra_item item
 
-      CustomLogger.info "Determined update is a transfer from #{scsb_item['owningInstitutionBibId']} to #{sync_message[:bib_record_number]}", { barcode: item['barcode'] }
+      $logger.info "Determined update is a transfer from #{scsb_item['owningInstitutionBibId']} to #{sync_message[:bib_record_number]}", { barcode: item['barcode'] }
     end
 
-    CustomLogger.debug "Posting message", sync_message
+    $logger.debug "Posting message", sync_message
 
     resp = $platform_api.post 'recap/sync-item-metadata-to-scsb', sync_message, authenticated: true
-    CustomLogger.info "Processed item #{item['id']} by posting message", sync_message
+    $logger.info "Processed item #{item['id']} by posting message", sync_message
   end
 
 end

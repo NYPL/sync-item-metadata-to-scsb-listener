@@ -12,6 +12,8 @@ describe ScsbClient do
       { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
     })
 
+    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
       .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b10079340x', 'owningInstitutions': ['NYPL'] })
       .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-10079340.raw'))

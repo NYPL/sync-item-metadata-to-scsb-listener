@@ -5,6 +5,7 @@ require 'aws-sdk-kms'
 describe BibHandler  do
 
   before(:each) do
+    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 
     kms = Aws::KMS::Client.new(region: 'us-east-1', stub_responses: true)
     kms.stub_responses(:decrypt, -> (context) {

@@ -37,7 +37,7 @@ class ScsbClient
     bookended_id = ".b#{SierraMod11.mod11(id)}"
     result = self.search fieldName: 'OwningInstitutionBibId', fieldValue: bookended_id, "owningInstitutions": [ "NYPL" ]
 
-    CustomLogger.debug "Retrieved items by bib id #{id} from scsb", result
+    $logger.debug "Retrieved items by bib id #{id} from scsb", result
 
     result['searchResultRows']
   end

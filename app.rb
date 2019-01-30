@@ -1,5 +1,6 @@
+require 'nypl_log_formatter'
+
 require_relative 'lib/avro_decoder'
-require_relative 'lib/custom_logger'
 require_relative 'lib/scsb_client'
 require_relative 'lib/platform_api_client'
 require_relative 'lib/kms_client'
@@ -19,6 +20,8 @@ def init
   $notification_email = KmsClient.new.decrypt ENV['NOTIFICATION_EMAIL']
 
   $nypl_core = NyplCore.new
+
+  $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 end
 
 def handle_event(event:, context:)
@@ -35,7 +38,7 @@ def handle_event(event:, context:)
       raise "Unrecognized schema: #{schema_name}. Must be one of #{$avro_decoders.keys.join(', ')}" if ! $avro_decoders.keys.include? schema_name
 
       decoded = $avro_decoders[schema_name].decode avro_data
-      CustomLogger.debug "Decoded #{schema_name}", decoded
+      $logger.debug "Decoded #{schema_name}", decoded
 
       ItemHandler.process decoded if schema_name == 'Item'
       BibHandler.process decoded if schema_name == 'Bib'

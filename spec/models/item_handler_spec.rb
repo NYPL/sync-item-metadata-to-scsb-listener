@@ -3,6 +3,9 @@ require 'webmock/rspec'
 require 'aws-sdk-kms'
 
 describe ItemHandler  do
+  before(:all) do
+    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+  end
 
   describe '#should_process?' do
     it "should consider an item with a rc location valid for processing" do

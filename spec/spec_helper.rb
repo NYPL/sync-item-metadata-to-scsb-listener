@@ -1,4 +1,5 @@
 require 'json'
+require 'nypl_log_formatter'
 
 require_relative '../lib/item_handler'
 require_relative '../lib/bib_handler'
