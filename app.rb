@@ -8,6 +8,8 @@ require_relative 'lib/item_handler'
 require_relative 'lib/bib_handler'
 
 def init
+  return if $initialized
+
   $avro_decoders = {
     "Bib" => AvroDecoder.by_name('Bib'),
     "Item" => AvroDecoder.by_name('Item')
@@ -22,6 +24,8 @@ def init
   $nypl_core = NyplCore.new
 
   $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+
+  $initialized = true
 end
 
 def handle_event(event:, context:)
