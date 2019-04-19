@@ -42,10 +42,27 @@ class ScsbClient
     result['searchResultRows']
   end
 
+  # Get item by barcode
   def item_by_barcode (barcode)
-    result = self.search fieldName: 'Barcode', fieldValue: barcode, "owningInstitutions": [ "NYPL" ]
+    params = {
+      fieldName: 'Barcode',
+      fieldValue: barcode,
+      owningInstitutions: [ "NYPL" ]
+    }
+    result = self.search params
 
-    raise ScsbError.new, "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
+    # If no results found, try a dummy record search (incomplete record):
+    if result['searchResultRows'].empty?
+      params[:deleted] = false
+      params[:collectionGroupDesignations] = ['NA']
+      params[:catalogingStatus] = 'Incomplete'
+
+      result = self.search params
+
+      $logger.debug "Standard barcode search failed. #{result['searchResultRows'].empty? ? 'Did not find' : 'Found'} record via Dummy search"
+    end
+
+    raise ScsbError.new(nil), "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
 
     result['searchResultRows'].first
   end
@@ -65,7 +82,7 @@ class ScsbClient
     req.body = body.to_json
     res = https.request(req)
 
-    raise ScsbError.new, "Error response from SCSB API: statusCode=#{res.code}" if res.code.to_i >= 400
+    raise ScsbError.new(nil), "Error response from SCSB API: statusCode=#{res.code}" if res.code.to_i >= 400
 
     JSON.parse(res.body)
   end

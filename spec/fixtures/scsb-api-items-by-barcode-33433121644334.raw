@@ -1,0 +1,8 @@
+HTTP/1.1 200 
+Date: Fri, 19 Apr 2019 19:43:55 GMT
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: AWSALB=7Is1NBCuEFnKLwhw+IG5b7sTxTmYjWm9gzq00sUtU/V+tk/3XCxBedt0OjTJfOyipY1XWR40sUKAyMsFu9RMGn9+eFbUmOzYdTMYRgFrSmG/G4lyCL/2P+tDedGX; Expires=Fri, 26 Apr 2019 19:43:55 GMT; Path=/
+
+{"searchResultRows":[],"totalPageCount":0,"totalBibRecordsCount":"0","totalItemRecordsCount":"0","totalRecordsCount":"0","showTotalCount":false,"errorMessage":null}
