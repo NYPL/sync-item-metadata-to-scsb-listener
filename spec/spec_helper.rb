@@ -9,6 +9,9 @@ require_relative '../lib/kms_client'
 require_relative '../lib/scsb_client'
 require_relative '../lib/sierra_mod_11'
 
+ENV['LOG_LEVEL'] = 'error'
+ENV['APP_ENV'] = 'test'
+
 def load_fixture (file)
   JSON.parse File.read("./spec/fixtures/#{file}")
 end

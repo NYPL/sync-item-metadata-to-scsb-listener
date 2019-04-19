@@ -51,7 +51,7 @@ describe BibHandler  do
       .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-11407166.raw"))
   end
 
-  it "should load mixed bibs lookup", dev: true do
+  it "should load mixed bibs lookup" do
     expect(BibHandler.is_mixed_bib?({ 'id' => '100000885' })).to eq(true)
     expect(BibHandler.is_mixed_bib?({ 'id' => 'fladeedle' })).to eq(false)
   end

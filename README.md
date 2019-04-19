@@ -58,7 +58,7 @@ bundle install --no-deployment
 ## Testing
 
 ```
-APP_ENV=test bundle exec rspec
+bundle exec rspec
 ```
 
 ### Updating fixtures

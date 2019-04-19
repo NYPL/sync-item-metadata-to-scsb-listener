@@ -83,7 +83,7 @@ describe ScsbClient do
       ).to have_been_made
     end
 
-    it "should fallback on Dummy search for incomplete record", dev: true do
+    it "should fallback on Dummy search for incomplete record" do
       client = ScsbClient.new
 
       item = client.item_by_barcode('33433121644334')
