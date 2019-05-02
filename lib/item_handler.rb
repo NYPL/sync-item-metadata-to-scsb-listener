@@ -34,8 +34,14 @@ class ItemHandler
   def self.process (item)
     return nil if ! self.should_process? item
 
-    scsb_item = $scsb_api.item_by_barcode item['barcode']
-    raise "Could not retrieve item from scsb by barcode", { barcode: item['barcode'], itemId: item['id'] } if scsb_item.nil?
+    begin
+      scsb_item = $scsb_api.item_by_barcode item['barcode']
+
+    # Catch specific error thrown when barcode doesn't match:
+    rescue ScsbNoMatchError => e
+      $logger.info "Could not retrieve item from scsb by barcode", { barcode: item['barcode'], itemId: item['id'] }
+      return
+    end
 
     sync_message = { barcodes: [ item['barcode'] ], user_email: $notification_email, source: 'bib-item-store-update' }
 

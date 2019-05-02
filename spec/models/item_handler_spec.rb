@@ -84,6 +84,14 @@ describe ItemHandler  do
         .to_return(File.new('./spec/fixtures/scsb-api-items-by-barcode-33433014464741.raw'))
       stub_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .to_return(status: 200, body: "{}" )
+
+      stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
+        .with(body: { fieldName: 'Barcode', fieldValue: '33433074008073', 'owningInstitutions': ['NYPL'] })
+        .to_return(File.new('./spec/fixtures/scsb-api-items-by-barcode-33433074008073.raw'))
+      stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
+        .with(body: { fieldName: 'Barcode', fieldValue: '33433074008073', 'owningInstitutions': ['NYPL'],
+          'deleted': false, 'collectionGroupDesignations': ["NA"], 'catalogingStatus': "Incomplete" })
+        .to_return(File.new('./spec/fixtures/scsb-api-items-by-barcode-33433074008073.raw'))
     end
 
     it "should handle a serial item" do
@@ -142,6 +150,18 @@ describe ItemHandler  do
           body: { "user_email" => $notification_email, "barcodes" => [ '33433014464741' ], "action" => 'transfer', "bib_record_number" => 'b12348', "source" => "bib-item-store-update"  }
         })
       ).to have_been_made
+    end
+
+    it "should no-op an item that is not in scsb" do
+      # This is an item that doesn't exist in scsb:
+      item = load_fixture 'item-36845773.json'
+
+      # This will trigger the ItemHandler to look up the item in scsb, which
+      # will fail both Complete and Incomplete record queries, causing
+      # nothing to be posted to the /sync-item-metadata-to-scsb:
+      ItemHandler.process item
+
+      expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")).to have_not_been_made
     end
   end
 end
