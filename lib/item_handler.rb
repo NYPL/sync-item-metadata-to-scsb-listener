@@ -31,16 +31,31 @@ class ItemHandler
     mismatched
   end
 
+  def self.is_incomplete_record (scsb_item)
+    is_incomplete = scsb_item['title'] == 'Dummy Title'
+    $logger.debug "Detecting incomplete item", { barcode: scsb_item['barcode'], is_incomplete: is_incomplete, title: scsb_item['title'] }
+    is_incomplete
+  end
+
   def self.process (item)
     return nil if ! self.should_process? item
 
-    scsb_item = $scsb_api.item_by_barcode item['barcode']
-    raise "Could not retrieve item from scsb by barcode", { barcode: item['barcode'], itemId: item['id'] } if scsb_item.nil?
+    begin
+      scsb_item = $scsb_api.item_by_barcode item['barcode']
+
+    # Catch specific error thrown when barcode doesn't match:
+    rescue ScsbNoMatchError => e
+      $logger.info "Could not retrieve item from scsb by barcode", { barcode: item['barcode'], itemId: item['id'] }
+      return
+    end
 
     sync_message = { barcodes: [ item['barcode'] ], user_email: $notification_email, source: 'bib-item-store-update' }
 
-    # Determine if the sync job is a transfer by checking for mismatched bnums:
-    if self.item_bnum_mismatch(item, scsb_item)
+    # Determine if the sync job is a transfer by checking both:
+    #  - bnum is different in ItemService compared with SCSB
+    #  - SCSB item is not Incomplete (which willappear as a bnum mismatch
+    #    because scsb Incomplete bnums are temporary)
+    if self.item_bnum_mismatch(item, scsb_item) && ! self.is_incomplete_record(scsb_item)
       sync_message[:action] = 'transfer'
       sync_message[:bib_record_number] = self.padded_bnum_for_sierra_item item
 

@@ -57,7 +57,7 @@ class BibHandler
     holding_location_collection_type = nil
     holding_location_collection_type = mapped_location['collectionTypes'][0] if mapped_location.is_a?(Hash) && mapped_location['collectionTypes'] && mapped_location['collectionTypes'] == 1
 
-    $logger.debug "Calculating holding location collection type as #{mapped_location['collectionTypes'][0]}", { location_code: item['location']['code'], mapped_location: mapped_location }
+    $logger.debug "Calculating holding location collection type as #{holding_location_collection_type}", { location_code: item['location']['code'], mapped_location: mapped_location }
 
     holding_location_collection_type === 'Research'
   end
