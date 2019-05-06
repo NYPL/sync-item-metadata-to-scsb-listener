@@ -62,7 +62,7 @@ class ScsbClient
       $logger.debug "Standard barcode search failed. #{result['searchResultRows'].empty? ? 'Did not find' : 'Found'} record via Dummy search"
     end
 
-    raise ScsbError.new(nil), "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
+    raise ScsbNoMatchError.new(nil), "SCSB returned no match for barcode #{barcode}" if result['searchResultRows'].empty?
 
     result['searchResultRows'].first
   end
