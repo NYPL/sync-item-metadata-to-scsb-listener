@@ -2,14 +2,28 @@ require_relative 'sierra_mod_11'
 
 class ItemHandler
   def self.should_process? (item)
-    # Return false if item is missing required fields (i.e. deleted)
-    return false if ! item.is_a?(Hash) || ! item['location'].is_a?(Hash) || ! item['location']['code'].is_a?(String)
+    # Make sure item meets minimum format & property requirements:
+    if ! item.is_a?(Hash)
+      $logger.debug 'Refusing to process invalid item', item: item
+      return false
+    end
 
-    is_recap = ! item["location"]["code"].match(/^rc/).nil?
+    if ! item['location'].is_a?(Hash) || !item['location']['code'].is_a?(String) || item['location']['code'].empty?
+      $logger.debug 'Refusing to process item with no location', item: item
+      return false
+    end
 
-    $logger.debug 'Refusing to process item with non-recap location', { location: item["location"]["code"], itemId: item['id'] } if ! is_recap
+    if ! item['barcode'].is_a?(String) || item['barcode'].empty?
+      $logger.debug 'Refusing to process item with no barcode', item: item
+      return false
+    end
 
-    is_recap
+    if item["location"]["code"].match(/^rc/).nil?
+      $logger.debug 'Refusing to process item with non-recap location', { location: item["location"]["code"], itemId: item['id'] }
+      return false
+    end
+
+    true
   end
 
   # Given a sierraitem (Hash), returns the padded form ('b' prefix + mod11 suffix)

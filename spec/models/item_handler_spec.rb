@@ -8,6 +8,27 @@ describe ItemHandler  do
   end
 
   describe '#should_process?' do
+    it "should refuse to process invalid item" do
+      rc_item = "fladeedle"
+
+      expect(ItemHandler.should_process?(rc_item)).to eq(false)
+    end
+
+    it "should refuse to process an item with no location" do
+      rc_item = load_fixture 'rc-item.json'
+
+      expect(ItemHandler.should_process?(rc_item.merge({'location' => { 'code' => nil }}))).to eq(false)
+      expect(ItemHandler.should_process?(rc_item.merge({'location' => { 'code' => '' }}))).to eq(false)
+      expect(ItemHandler.should_process?(rc_item.merge({'location' => nil}))).to eq(false)
+    end
+
+    it "should refuse to process an item with no barcode" do
+      rc_item = load_fixture 'rc-item.json'
+
+      expect(ItemHandler.should_process?(rc_item.merge({'barcode' => nil}))).to eq(false)
+      expect(ItemHandler.should_process?(rc_item.merge({'barcode' => ''}))).to eq(false)
+    end
+
     it "should consider an item with a rc location valid for processing" do
       rc_item = load_fixture 'rc-item.json'
 
