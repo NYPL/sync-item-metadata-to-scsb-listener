@@ -17,7 +17,7 @@ describe PlatformApiClient do
     $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 
     stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
-    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/b12082323").to_return(status: 200, body: File.read('./spec/fixtures/bib.json'))
+    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/12082323").to_return(status: 200, body: File.read('./spec/fixtures/bib.json'))
   end
 
   it "should authenticate when calling with :authenticate => true" do
@@ -27,7 +27,7 @@ describe PlatformApiClient do
     expect(client.instance_variable_get(:@access_token)).to be_nil
 
     # Call an endpoint with authentication:
-    expect(client.get('bibs/sierra-nypl/b12082323', authenicate: true)).to be_a(Object)
+    expect(client.get('bibs/sierra-nypl/12082323', authenicate: true)).to be_a(Object)
 
     # Verify access_token retrieved:
     expect(client.instance_variable_get(:@access_token)).to be_a(String)
