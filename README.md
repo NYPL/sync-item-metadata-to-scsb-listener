@@ -27,9 +27,15 @@ bundle install; bundle install --deployment
 
 All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
 
+#### Changes to SCSB/UAT endpoints
+
+When HTC changes the SCSB endpoint, apply changes to the relevant deployment in `.travis.yml`. Both `SCSB_API_BASE_URL` and `SCSB_API_KEY` should be encrypted. Note that at writing a [dpl](https://github.com/travis-ci/dpl) bug impacting native ruby lambdas causes one's deployment config to fail to be applied. After deployment, check the deployed env variables to see if you need to manually apply changes.
+
 ## Contributing
 
 ### Git Workflow
+
+This app uses a [Development-QA-Main](https://github.com/NYPL/engineering-general/blob/master/standards/git-workflow.md#development-qa-main) git workflow.
 
  * Cut branches from `development`.
  * Create PR against `development`.
