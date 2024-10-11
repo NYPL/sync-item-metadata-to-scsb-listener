@@ -42,7 +42,7 @@ All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
 
 The following will invoke the lambda against the sample event jsons:
 ```
-AWS_ACCESS_KEY_ID=[...] AWS_SECRET_ACCESS_KEY=[...] bundle exec sam local invoke --event event.bib.json --region us-east-1 --template sam.local.yml
+AWS_ACCESS_KEY_ID=[...] AWS_SECRET_ACCESS_KEY=[...] bundle exec sam local invoke --event event.[bib|item].json --region us-east-1 --template sam.local.yml
 ```
 
 The sample `event.json` as follows:
