@@ -45,8 +45,6 @@ The following will invoke the lambda against the sample event jsons:
 AWS_ACCESS_KEY_ID=[...] AWS_SECRET_ACCESS_KEY=[...] bundle exec sam local invoke --event event.[bib|item].json --region us-east-1 --template sam.local.yml
 ```
 
-The sample `event.json` as follows:
-
 ### Gemfile Changes
 
 Given that gems are installed with the `--deployment` flag, Bundler will complain if you make changes to the Gemfile. To make changes to the Gemfile, exit deployment mode:
@@ -85,4 +83,4 @@ At writing, the following records serve as good representations of the many diff
 
 ## Deploy
 
-Deployments are entirely handled by Travis-ci.com. To deploy to development, qa, or production, commit code to the `development`, `qa`, and `master` branches on origin, respectively.
+Deployments are entirely handled by GitHub Actions. To deploy to qa or production, commit code to the `qa` or `production` branches on origin, respectively.
