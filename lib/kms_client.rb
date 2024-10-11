@@ -6,7 +6,7 @@ class KmsClient
 
   def initialize
     @kms = self.class.aws_kms_client
-  end 
+  end
 
   def decrypt(cipher)
     # Assume value is base64 encoded:
@@ -16,7 +16,16 @@ class KmsClient
   end
 
   def self.aws_kms_client
-    @@kms = Aws::KMS::Client.new(region: 'us-east-1', stub_responses: ENV['APP_ENV'] == 'test') if @@kms.nil?
+    if ENV['LOCAL']
+      @@kms = Aws::KMS::Client.new(
+        region: 'us-east-1',
+        stub_responses: ENV['APP_ENV'] == 'test',
+        access_key_id:  ENV['AWS_ACCESS_KEY_ID'],
+        secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
+      ) if @@kms.nil?
+    else
+      @@kms = Aws::KMS::Client.new(region: 'us-east-1', stub_responses: ENV['APP_ENV'] == 'test') if @@kms.nil?
+    end
     @@kms
   end
 end
