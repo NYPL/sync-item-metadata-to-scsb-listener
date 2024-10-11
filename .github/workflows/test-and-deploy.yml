@@ -1,0 +1,60 @@
+name: Test and Deploy
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+      - name: Install gems
+        run: |
+          bundle install
+      - run:
+          bundle exec rspec
+
+  deploy-lambda-qa:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    needs: test
+    if: github.ref == 'refs/heads/qa'
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::946183545209:role/GithubActionsDeployerRole
+          aws-region: us-east-1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+      - name: Install gems
+        run: |
+          bundle install
+      - uses: hashicorp/setup-terraform@v2
+      - name: Deploy app to QA
+        run: |
+          terraform -chdir=provisioning/qa init -input=false
+          terraform -chdir=provisioning/qa apply -auto-approve -input=false
+  deploy-lambda-production:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    needs: test
+    if: github.ref == 'refs/heads/production'
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::946183545209:role/GithubActionsDeployerRole
+          aws-region: us-east-1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+      - name: Install gems
+        run: |
+          bundle install
+      - uses: hashicorp/setup-terraform@v2
+      - name: Deploy app to QA
+        run: |
+          terraform -chdir=provisioning/production init -input=false
+          terraform -chdir=provisioning/production apply -auto-approve -input=false

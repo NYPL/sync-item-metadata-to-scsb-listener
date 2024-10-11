@@ -42,7 +42,7 @@ All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
 
 The following will invoke the lambda against the sample event jsons:
 ```
-sam local invoke --event event.[bib/item].json --region us-east-1 --template sam.[ENVIRONMENT].yml --profile [aws profile]
+AWS_ACCESS_KEY_ID=[...] AWS_SECRET_ACCESS_KEY=[...] bundle exec sam local invoke --event event.bib.json --region us-east-1 --template sam.local.yml
 ```
 
 The sample `event.json` as follows:
@@ -86,4 +86,3 @@ At writing, the following records serve as good representations of the many diff
 ## Deploy
 
 Deployments are entirely handled by Travis-ci.com. To deploy to development, qa, or production, commit code to the `development`, `qa`, and `master` branches on origin, respectively.
-

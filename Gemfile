@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'json'
 gem 'aws-sdk'
+gem 'aws-sdk-kms'
 gem 'avro'
 gem 'nypl_log_formatter', '~> 0.1.2'
 
