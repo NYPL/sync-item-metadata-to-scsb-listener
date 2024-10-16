@@ -16,16 +16,9 @@ class KmsClient
   end
 
   def self.aws_kms_client
-    if ENV['LOCAL']
-      @@kms = Aws::KMS::Client.new(
-        region: 'us-east-1',
-        stub_responses: ENV['APP_ENV'] == 'test',
-        access_key_id:  ENV['AWS_ACCESS_KEY_ID'],
-        secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
-      ) if @@kms.nil?
-    else
-      @@kms = Aws::KMS::Client.new(region: 'us-east-1', stub_responses: ENV['APP_ENV'] == 'test') if @@kms.nil?
-    end
+    # To work around https://github.com/aws/aws-sam-cli/issues/3118:
+    ENV.delete "AWS_SESSION_TOKEN" if ENV['AWS_SESSION_TOKEN'] == ''
+    @@kms = Aws::KMS::Client.new(region: 'us-east-1', stub_responses: ENV['APP_ENV'] == 'test') if @@kms.nil?
     @@kms
   end
 end
