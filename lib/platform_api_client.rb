@@ -41,7 +41,7 @@ class PlatformApiClient
     rescue Exception => e
       raise AvroError.new(e), "Failed to retrieve #{path} schema: #{e.message}"
     end
-  end 
+  end
 
   def post (path, body, options = {})
     options = {
@@ -67,7 +67,7 @@ class PlatformApiClient
     response = http.request(request)
 
     $logger.debug "Got platform api response", { code: response.code, body: response.body }
-  
+
     parse_json_response response
   end
 
