@@ -32,8 +32,7 @@ resource "aws_s3_bucket_object" "uploaded_zip" {
 
 # Create the lambda:
 resource "aws_lambda_function" "lambda_instance" {
-  description   = "A small service for listening for bib/item metadata changes to sync
-    SCSB"
+  description   = "A small service for listening for bib/item metadata changes to sync SCSB"
   function_name = "SyncItemMetadataToScsbListener-${var.environment}"
   handler       = "app.handle_event"
   memory_size   = 128
