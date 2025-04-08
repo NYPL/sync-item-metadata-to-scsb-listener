@@ -7,7 +7,7 @@ class BibHandler
   def self.first_item_by_bib_id (id) 
     # Note that we'd like to pass `&limit=1` here, but ItemService seems to
     # have a bug ( https://github.com/NYPL-discovery/itemservice/issues/5 )
-    items = $platform_api.get "items?nyplSource=sierra-nypl&bibId=#{id}"
+    items = $platform_api.get "bibs/sierra-nypl/#{id}/items"
     if (items.nil? || items.empty? || items['data'].nil? || !items['data'].is_a?(Array))
       $logger.error "Bad response from ItemService querying for first item by bib id #{id}", items
       nil
