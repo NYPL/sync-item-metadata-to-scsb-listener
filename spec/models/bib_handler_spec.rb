@@ -3,6 +3,7 @@ require 'webmock/rspec'
 require 'aws-sdk-kms'
 
 describe BibHandler  do
+  varfield_910_rl = { 'marcTag' => '910', 'subfields' => [ { 'tag' => 'a', 'content' => 'RL' } ] }
 
   before(:each) do
     $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
@@ -51,57 +52,21 @@ describe BibHandler  do
       .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-11407166.raw"))
   end
 
-  it "should load mixed bibs lookup" do
-    expect(BibHandler.is_mixed_bib?({ 'id' => '100000885' })).to eq(true)
-    expect(BibHandler.is_mixed_bib?({ 'id' => 'fladeedle' })).to eq(false)
-  end
-
-  it "should query first item by bib id" do
-    first_item = BibHandler.first_item_by_bib_id('10079340')
-    expect(first_item).to be_a(Object)
-    expect(first_item['id']).to eq('11907245')
-  end
-
-  it "should identify item with research Item Type as research" do
-    item_type = "3"
-    is_research = BibHandler.item_has_research_item_type?({ "fixedFields" => { "0" => { "label" => "Item Type", "value" => item_type } } })
-    expect(is_research).to eq(true)
-  end
-
-  it "should identify item with non-research Item Type as non-research" do
-    item_type = "138"
-    is_research = BibHandler.item_has_research_item_type?({ "fixedFields" => { "0" => { "label" => "Item Type", "value" => item_type } } })
-    expect(is_research).to eq(false)
-  end
-
-  it "should identify item with non-research location as non-research" do
-    is_research = BibHandler.item_has_research_item_type?({ "location" => { "code" => "hfa0f" }, "fixedFields" => {} })
-    expect(is_research).to eq(false)
-  end
-
-  it "should identify item with non-research location as non-research" do
-    is_research = BibHandler.item_has_research_item_type?({ "location" => { "code" => "rc2ma" }, "fixedFields" => {} })
-    expect(is_research).to eq(false)
-  end
-
-  it "should identify first item as research" do
-    is_research = BibHandler.first_item_is_research?({ "id" => "10079340" })
-    expect(is_research).to eq(true)
-  end
-
-  it "should identify first item as non-research" do
-    # this item has non-research Item Type:
-    is_research = BibHandler.first_item_is_research?({ "id" => "20918822" })
-    expect(is_research).to eq(false)
-  end
-
   describe '#should_process?' do
-    it "should consider a bib valid for processing if it is mixed" do
-      expect(BibHandler.should_process?({ 'id' => '100000885' })).to eq(true)
+    it "should consider a bib valid for processing if it has a 910|a=RL" do
+      expect(BibHandler.should_process?({ 'id' => '10079340', 'varFields' => [ varfield_910_rl ] })).to eq(true)
     end
 
-    it "should consider a bib valid for processing if its first item is research" do
-      expect(BibHandler.should_process?({ 'id' => '10079340' })).to eq(true)
+    it "should consider a bib NOT valid for processing if has anything but 910|a=RL" do
+      expect(BibHandler.should_process?({ 'id' => '10079340', 'varFields' => [ 
+        { 'marcTag' => '910', 'subfields' => [ { 'tag' => 'a', 'content' => 'BL' } ] }
+      ]})).to eq(false)
+
+      expect(BibHandler.should_process?({ 'id' => '10079340', 'varFields' => [ 
+        { 'marcTag' => '910', 'subfields' => [ { 'tag' => 'a', 'content' => 'RLOTF' } ] }
+      ]})).to eq(false)
+
+      expect(BibHandler.should_process?({ 'id' => '10079340', 'varFields' => [] })).to eq(false)
     end
 
     it "should not consider a bib valid for processing if it's not mixed and its first item is non-research" do
@@ -122,15 +87,13 @@ describe BibHandler  do
 
   describe "#process" do
     before(:each) do
-      stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/19822713/items")
-        .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-19822713.raw"))
       stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
         .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b198227139', 'owningInstitutions': ['NYPL'] })
         .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-b198227139.raw'))
     end
 
     it "should submit all item barcodes for a valid bib to the sync endpoint" do
-      BibHandler.process({ 'id' => '19822713' })
+      BibHandler.process({ 'id' => '19822713', 'varFields' => [ varfield_910_rl ] })
 
       expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
         .with({
@@ -142,7 +105,7 @@ describe BibHandler  do
   end
 
   it "should submit all item barcodes for a serial bib to the sync endpoint" do
-    BibHandler.process({ 'id' => '10079340' })
+    BibHandler.process({ 'id' => '10079340', 'varFields' => [ varfield_910_rl ]  })
 
     # This is a serial with 4 items in scsb
     expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
@@ -153,7 +116,7 @@ describe BibHandler  do
   end
 
   it "should not submit anything if bib determined to be possibly in recap but SCSB returns no items" do
-    BibHandler.process({ 'id' => '11407166' })
+    BibHandler.process({ 'id' => '11407166', 'varFields' => [ varfield_910_rl ]  })
 
     expect(a_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
       .with({
