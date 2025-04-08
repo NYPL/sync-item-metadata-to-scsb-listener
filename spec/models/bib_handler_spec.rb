@@ -32,14 +32,6 @@ describe BibHandler  do
 
     stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
 
-    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/10079340/items")
-      .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-10079340.raw"))
-    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/20918822/items")
-      .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-20918822.raw"))
-    stub_request(:get, "https://s3.amazonaws.com/nypl-core-objects-mapping-production/by_catalog_item_type.json")
-      .to_return(status: 200, body: File.read('./spec/fixtures/by_catalog_item_type.json')) 
-    stub_request(:get, "https://s3.amazonaws.com/nypl-core-objects-mapping-production/by_sierra_location.json")
-      .to_return(status: 200, body: File.read('./spec/fixtures/by_sierra_location.json')) 
     stub_request(:post, "#{ENV['PLATFORM_API_BASE_URL']}recap/sync-item-metadata-to-scsb")
       .to_return(status: 200, body: "{}" )
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
@@ -48,8 +40,6 @@ describe BibHandler  do
     stub_request(:post, "#{Base64.strict_decode64 ENV['SCSB_API_BASE_URL']}/searchService/search")
       .with(body: { fieldName: 'OwningInstitutionBibId', fieldValue: '.b114071664', 'owningInstitutions': ['NYPL'] })
       .to_return(File.new('./spec/fixtures/scsb-api-items-by-bib-id-11407166.raw'))
-    stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/11407166/items")
-      .to_return(File.new("./spec/fixtures/platform-api-items-by-bib-11407166.raw"))
   end
 
   describe '#should_process?' do
@@ -74,11 +64,6 @@ describe BibHandler  do
     end
 
     describe "#should_process?" do
-      before(:each) do
-        stub_request(:get, "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/fakebibid/items")
-          .to_return(status: 404, body: '{"statusCode":404,"type":"exception","message":"No records found","error":[],"debugInfo":[]}')
-      end
-
       it "should quietly fail to process any bib for which there are no items" do
         expect(BibHandler.should_process?({ 'id' => 'fakebibid' })).to eq(false)
       end

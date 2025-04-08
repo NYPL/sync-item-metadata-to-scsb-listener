@@ -3,8 +3,8 @@ require_relative 'nypl_core'
 class BibHandler
   @@mixed_bib_ids = nil
 
+  # Returns true if the bib has a 910|a = 'RL', false otherwise
   def self.has_rl_tag? (bib)
-    p bib
     return false unless bib['varFields'].is_a?(Array)
 
     var_field_910 = bib['varFields'].find { |var| var['marcTag'] == '910' }
